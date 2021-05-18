@@ -1,3 +1,5 @@
+import 'package:camba/Pages/homeInit.dart';
+import 'package:camba/Pages/profile.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -12,20 +14,23 @@ class _RegisterState extends State {
   final phoneController = TextEditingController();
   final passController = TextEditingController();
 
-  var validate = false;
+  var permiso = true;
+
+  bool _validate = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(children: <Widget>[
-      Image.asset(
-        'assets/images/bg_white.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-      ),
-      SafeArea(
-          child: SizedBox(
+      body: Stack(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/bg_white.jpg',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          SafeArea(
+            child: SizedBox(
               width: double.infinity,
               child: Padding(
                 padding: EdgeInsets.all(10),
@@ -57,6 +62,9 @@ class _RegisterState extends State {
                                 controller: nameController,
                                 textInputAction: TextInputAction.search,
                                 decoration: InputDecoration(
+                                  errorText: _validate
+                                      ? 'Value Can\'t Be Empty'
+                                      : null,
                                   border: InputBorder.none,
                                   hintText: 'Nombre y Apellido',
                                   prefixIcon: Icon(
@@ -161,23 +169,38 @@ class _RegisterState extends State {
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text(
-                                  'Completa correctamente todos los campos'),
-                            ),
+                            permiso == false
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 5),
+                                    child: Text(
+                                        'Completa correctamente todos los campos*',
+                                        style: TextStyle(color: Colors.red)),
+                                  )
+                                : Container(),
                             GestureDetector(
                               onTap: () {
-                                print(nameController.value.text);
-                                // Navigator.pop(context);
-                                if (nameController.value.text.isEmpty ||
-                                    emailController.value.text.isEmpty ||
-                                    nickNameController.value.text.isEmpty) {
+                                setState(() {
+                                  emailController.text.isNotEmpty &&
+                                          nameController.text.isNotEmpty &&
+                                          passController.text.isNotEmpty &&
+                                          nickNameController.text.isNotEmpty &&
+                                          phoneController.text.isNotEmpty
+                                      ? _validate = true
+                                      : _validate = false;
+                                });
+                                bool emailValid = RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(emailController.text);
+                                if (emailValid && _validate) {
+                                  Navigator.pop(context);
                                   setState(() {
-                                    validate = false;
+                                    permiso = true;
                                   });
                                 } else {
-                                  Navigator.pop(context);
+                                  setState(() {
+                                    permiso = false;
+                                  });
+                                  print('no permitido');
                                 }
                               },
                               child: Container(
@@ -200,11 +223,11 @@ class _RegisterState extends State {
                     ],
                   ),
                 ),
-              )))
-    ]));
-  }
-
-  Widget _validation() {
-    return Text('Completa todos los campos correctamente para continuar');
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

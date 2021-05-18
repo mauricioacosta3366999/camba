@@ -13,7 +13,6 @@ class Consultas {
     final res = await http.post(url);
     this.responde = json.decode(res.body);
     var categories = Categories.fromJson(responde);
-    // print(categories);
     return categories;
   }
 
@@ -21,11 +20,9 @@ class Consultas {
     final url2 =
         Uri.parse('https://cambachivache.net:9000/api/cambas/obtener_cambas');
     final res = await http.post(url2,
-        body: {"categoria_nombre": 'Todos', "admin": "0", "last": "0"});
+        body: {"categoria_nombre": "Todos", "admin": "0", "last": "0"});
     this.responde = json.decode(res.body);
     CambasModel cambasModel = CambasModel.fromJson(responde);
-    print("respuesta $responde");
-    print("respuesta del modelo $cambasModel");
     return cambasModel;
   }
 }

@@ -1,7 +1,16 @@
+import 'package:camba/Pages/homeInit.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
 
 class ProductDetail extends StatefulWidget {
+  String cambaName;
+  String cambaDescription;
+  String cambaImage;
+  String cambaPrice;
+  ProductDetail(
+      this.cambaName, this.cambaDescription, this.cambaImage, this.cambaPrice,
+      {Key? key})
+      : super(key: key);
   _ProductDetailState createState() => _ProductDetailState();
 }
 
@@ -19,17 +28,18 @@ class _ProductDetailState extends State<ProductDetail> {
       children: [
         Header(),
         Container(
-          color: Colors.lightBlue,
+          color: Colors.grey[300],
           margin: EdgeInsets.all(20),
           height: 200,
           width: double.infinity,
+          child: Image.network(widget.cambaImage),
         ),
         Container(
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
           width: double.infinity,
           child: Text(
-            'El Nombre del Producto.',
+            widget.cambaName,
             style: TextStyle(fontSize: 21),
           ),
         ),
@@ -44,7 +54,7 @@ class _ProductDetailState extends State<ProductDetail> {
         Container(
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           width: double.infinity,
-          child: Text('Esta es la Descripción del producto.'),
+          child: Text(widget.cambaDescription),
         ),
         Container(
           margin: EdgeInsets.only(left: 20, bottom: 5),
@@ -57,7 +67,7 @@ class _ProductDetailState extends State<ProductDetail> {
         Container(
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           width: double.infinity,
-          child: Text('Esta es la Descripción del producto.'),
+          child: Text(widget.cambaPrice),
         ),
         Container(
           margin: EdgeInsets.only(left: 20, bottom: 5),
@@ -79,7 +89,7 @@ class _ProductDetailState extends State<ProductDetail> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return ProductDetail();
+                  return HomeInit();
                 }));
               },
               child: Container(
