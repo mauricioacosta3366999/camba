@@ -23,7 +23,7 @@ class _HomeInitState extends State {
   }
 
   void _inicializate() async {
-    var filter = 'Todos';
+    var categoryFilter = 'Todos';
     cambas = await Consultas().getCambas();
     print(
         'estos son los datas del home ${cambas?.message?.cambas?.original?[0].descripcion}');

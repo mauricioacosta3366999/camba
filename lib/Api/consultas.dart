@@ -25,4 +25,14 @@ class Consultas {
     CambasModel cambasModel = CambasModel.fromJson(responde);
     return cambasModel;
   }
+
+  Future<CambasModel> getSearchCambas() async {
+    final url2 =
+        Uri.parse('https://cambachivache.net:9000/api/cambas/obtener_cambas');
+    final res = await http.post(url2,
+        body: {"categoria_nombre": "Todos", "admin": "0", "last": "0"});
+    this.responde = json.decode(res.body);
+    CambasModel cambasModel = CambasModel.fromJson(responde);
+    return cambasModel;
+  }
 }

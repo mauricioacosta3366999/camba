@@ -26,7 +26,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
   }
 
   void inicializate() async {
-    var filter = "Bicicletas";
+    var categoryFilter = widget.categoriaSeleccionada;
     cambas = await Consultas().getCambas();
     print(cambas!.message!.cambas!.original!.length);
   }

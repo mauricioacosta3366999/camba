@@ -1,7 +1,8 @@
+import 'package:camba/Api/Models/obtenerCambas.dart';
+import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/categories.dart';
 import 'package:camba/Login/login.dart';
 import 'package:camba/Login/register.dart';
-import 'package:camba/Pages/profile.dart';
 import 'package:camba/Pages/searchResult.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +21,17 @@ class SearchText {
 
 class _HeaderState extends State<Header> {
   var buscadorController = TextEditingController();
+  CambasModel? cambas;
 
-  // searchFunction() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString('searchText', buscadorController.value.text);
-  // }
+  @override
+  void initState() {
+    super.initState();
+    inicializate();
+  }
+
+  void inicializate() async {
+    cambas = await Consultas().getCambas();
+  }
 
   @override
   Widget build(BuildContext context) {
