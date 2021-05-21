@@ -1,3 +1,4 @@
+import 'package:camba/Api/Models/cambasBuscados.dart';
 import 'package:camba/Api/Models/obtenerCambas.dart';
 import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/categories.dart';
@@ -21,6 +22,7 @@ class SearchText {
 
 class _HeaderState extends State<Header> {
   var buscadorController = TextEditingController();
+  CambasBuscados? cambasBuscados;
   CambasModel? cambas;
 
   @override
@@ -191,4 +193,9 @@ class _HeaderState extends State<Header> {
       ],
     );
   }
+
+  // void searchFunction() async {
+  //   cambasBuscados = await Consultas().getSearchCambas();
+  //   print(cambasBuscados);
+  // }
 }

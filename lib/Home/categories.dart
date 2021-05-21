@@ -134,11 +134,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('TODAS LAS CATEGORIAS',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
+                        GestureDetector(
+                          onTap: () {
+                            var categoriaSeleccionada = "Todas";
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return CategoryFilter(categoriaSeleccionada);
+                            }));
+                          },
+                          child: Text('TODAS LAS CATEGORIAS',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
                         Icon(
                           Icons.chevron_right_outlined,
                           color: Colors.white,
@@ -146,7 +155,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       ],
                     ),
                     ExpansionTile(
-                        backgroundColor: Colors.grey[600],
+                        backgroundColor: Colors.grey[850],
                         title: Text(
                           "PRODUCTOS",
                           style: TextStyle(
@@ -163,29 +172,39 @@ class _CategoriesPageState extends State<CategoriesPage> {
                               color: Colors.white)),
                       children: <Widget>[
                         for (var i = 0; i < 10; i++)
-                          ExpansionTile(
-                            title: Text(servicios[i].toString(),
-                                style: TextStyle(color: Colors.white)),
-                            // children: <Widget>[
-                            //   ListTile(
-                            //     title: Text('data',
-                            //         style: TextStyle(color: Colors.white)),
-                            //   )
-                            // ],
+                          PersonalListTile(
+                            title: GestureDetector(
+                              onTap: () {
+                                var categoriaSeleccionada =
+                                    servicios[i].toString();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return CategoryFilter(categoriaSeleccionada);
+                                }));
+                              },
+                              child: Text(servicios[i].toString(),
+                                  style: TextStyle(color: Colors.white)),
+                            ),
                           ),
-                        // ListTile(
-                        //   title: Text('data'),
-                        // )
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('OTROS',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
+                        GestureDetector(
+                          onTap: () {
+                            var categoriaSeleccionada = "Otros";
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return CategoryFilter(categoriaSeleccionada);
+                            }));
+                          },
+                          child: Text('OTROS',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
                         Icon(Icons.chevron_right_outlined)
                       ],
                     ),
