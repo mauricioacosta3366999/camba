@@ -17,11 +17,11 @@ class Consultas {
     return categories;
   }
 
-  Future<CambasModel> getCambas() async {
+  Future<CambasModel> getCambas(int page) async {
     final obtenerCambas =
         Uri.parse('https://cambachivache.net:9000/api/cambas/obtener_cambas');
     final res = await http.post(obtenerCambas,
-        body: {"categoria_nombre": "Todos", "admin": "0", "last": "0"});
+        body: {"categoria_nombre": "Todos", "admin": "0", "last": "$page"});
     this.responde = json.decode(res.body);
     CambasModel cambasModel = CambasModel.fromJson(responde);
     return cambasModel;

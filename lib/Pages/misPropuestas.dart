@@ -10,8 +10,8 @@ class MisPropuestas extends StatefulWidget {
 class _MisPropuestasState extends State {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _body(),
+    return Column(
+      children: [_body()],
     );
   }
 

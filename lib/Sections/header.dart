@@ -32,7 +32,7 @@ class _HeaderState extends State<Header> {
   }
 
   void inicializate() async {
-    cambas = await Consultas().getCambas();
+    cambas = await Consultas().getCambas(0);
   }
 
   @override

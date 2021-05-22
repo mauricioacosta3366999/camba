@@ -10,8 +10,8 @@ class MisCambas extends StatefulWidget {
 class _MisCambasState extends State {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _body(),
+    return Column(
+      children: [_body()],
     );
   }
 
