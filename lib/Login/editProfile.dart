@@ -83,7 +83,7 @@ class _EditProfileState extends State {
         ]),
         Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: Text('Nombre Completo'),
+          child: Text('Nombre y Apellido'),
         ),
         Container(
           decoration: BoxDecoration(

@@ -48,34 +48,30 @@ class _HomeInitState extends State {
     if (_scrollController!.offset >=
             _scrollController!.position.maxScrollExtent &&
         !_scrollController!.position.outOfRange) {
+      if (saltar == true) {
+        setState(() {
+          saltar = false;
+        });
+      } else {
+        print('ENTRO DENTRO DEL SRCROLL2');
+        CambasModel cambas2 = await Consultas().getCambas(page);
+        cambas2.message!.cambas!.original!.forEach((element) {
+          print("2 ${element.tituloCamba}");
+        });
+        for (var item in cambas2.message!.cambas!.original!) {
+          datosCambas!.add(item);
+        }
+        datosCambas?.forEach((element) {
+          print("1  ${element.tituloCamba}");
+        });
 
-          if (saltar == true) {
-            setState(() {
-              saltar = false;
-            });
-          } else {
-
-            print('ENTRO DENTRO DEL SRCROLL2');
-            CambasModel cambas2 = await Consultas().getCambas(page);
-            cambas2.message!.cambas!.original!.forEach((element) {
-              print("2 ${element.tituloCamba}");
-            });
-            for (var item in cambas2.message!.cambas!.original!) {
-              datosCambas!.add(item);
-            }
-            datosCambas?.forEach((element) {
-              print("1  ${element.tituloCamba}");
-            });
-
-            print(datosCambas!.length);
-            print(cambas2.message!.cambas!.original!.length);
-            setState(() {
-              page = cambas2.message!.last!;
-              datosCambas;
-            });
-
-          }
-      
+        print(datosCambas!.length);
+        print(cambas2.message!.cambas!.original!.length);
+        setState(() {
+          page = cambas2.message!.last!;
+          datosCambas;
+        });
+      }
     }
   }
 
@@ -138,7 +134,7 @@ class _HomeInitState extends State {
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.black)),
+                                  border: Border.all(color: Colors.grey)),
                               width: double.infinity,
                               margin: EdgeInsets.only(
                                   left: 20, right: 20, bottom: 30),

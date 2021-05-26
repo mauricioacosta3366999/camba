@@ -9,9 +9,13 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State {
+  final emailController = TextEditingController();
+  var edit = false;
   @override
   Widget build(BuildContext context) {
-    return _body();
+    return SingleChildScrollView(
+      child: _body(),
+    );
   }
 
   Widget _body() {
@@ -45,16 +49,15 @@ class _ProfileState extends State {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Nombre de Perfil'),
+                  child: Text('Mauricio Acosta'),
                 )
               ],
             ),
           ),
           Container(
             padding: EdgeInsets.only(top: 10, bottom: 10),
-            margin: EdgeInsets.only(top: 150, left: 30, right: 30),
-            width: 350,
-            height: 100,
+            margin: EdgeInsets.only(top: 150, left: 40, right: 40),
+            height: 90,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(20),
@@ -71,7 +74,7 @@ class _ProfileState extends State {
                     }));
                   },
                   child: Container(
-                      height: 30, width: 90, child: Text('MIS \nCAMBAS')),
+                      height: 30, width: 90, child: Text('EDITAR \nPERFIL')),
                 ),
                 VerticalDivider(
                   color: Colors.grey,
@@ -85,142 +88,185 @@ class _ProfileState extends State {
                       }));
                     },
                     child: Container(
-                        height: 30, width: 90, child: Text('MIS \nPROPUESTAS')))
+                        height: 30,
+                        width: 90,
+                        child: Text('ELIMINAR \nPERFIL')))
               ],
             ),
           )
         ]),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Text('Nombre y Apellido'),
+        ),
+        edit == false
+            ? Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, right: 20),
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: Icon(Icons.person, color: Colors.grey),
+                    ),
+                    Text(
+                      'Mauricio Acosta',
+                      style: TextStyle(fontSize: 16),
+                    )
+                  ],
+                ))
+            : Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, right: 20),
+                height: 50,
+                width: double.infinity,
+                child: TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.black,
+                  controller: emailController,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Colors.grey,
+                    ),
+                    hintText: 'Nombre y Apellido',
+                    hintStyle: TextStyle(color: Colors.black),
+                  ),
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text('Correo Electrónico'),
+        ),
         Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(20)),
-          margin: EdgeInsets.only(left: 20, top: 20, right: 20),
-          height: 50,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [Text('Ver mensajes'), Icon(Icons.chat)],
-          ),
-        ),
-//EDITAR PERFIL
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return EditProfile();
-            }));
-          },
-          child: Container(
             decoration: BoxDecoration(
+                color: Colors.grey[300],
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+            margin: EdgeInsets.only(left: 20, right: 20),
             height: 50,
             width: double.infinity,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text('Editar perfil'),
-                Icon(
-                  Icons.edit,
-                  size: 20,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Icon(Icons.email, color: Colors.grey),
+                ),
+                Text(
+                  'mauricio.acosta@gmail.com',
+                  style: TextStyle(fontSize: 16),
                 )
               ],
-            ),
-          ),
-        ),
+            )),
 //IR A CAMBACHIVAVHEAR (HOME)
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Home();
-            }));
-          },
-          child: Container(
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text('Usuario'),
+        ),
+        Container(
             decoration: BoxDecoration(
+                color: Colors.grey[300],
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+            margin: EdgeInsets.only(left: 20, right: 20),
             height: 50,
             width: double.infinity,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text('Ir a cambachivachear'),
-                Icon(
-                  Icons.arrow_right_outlined,
-                  size: 40,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Icon(Icons.contacts_rounded, color: Colors.grey),
+                ),
+                Text(
+                  'Macosta',
+                  style: TextStyle(fontSize: 16),
                 )
               ],
-            ),
-          ),
-        ),
+            )),
+        edit == false
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    edit = true;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(20)),
+                  margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('Editar perfil'),
+                      Icon(
+                        Icons.edit,
+                        size: 20,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Container(),
 //CERRAR SESION
-        GestureDetector(
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Stack(
-                      overflow: Overflow.visible,
-                      children: <Widget>[
-                        Positioned(
-                          right: -40.0,
-                          top: -40.0,
-                          child: InkResponse(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: CircleAvatar(
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              ),
-                              backgroundColor: Colors.black54,
-                            ),
-                          ),
-                        ),
-                        Form(
-                          // key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+        edit == false
+            ? GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Stack(
+                            overflow: Overflow.visible,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text('Quierés cerrar sesión?'),
+                              Positioned(
+                                right: -40.0,
+                                top: -40.0,
+                                child: InkResponse(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: CircleAvatar(
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    backgroundColor: Colors.black54,
+                                  ),
+                                ),
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              border: Border.all(
-                                                  color: Colors.grey,
-                                                  width: 2)),
-                                          child: Text('CANCELAR',
-                                              style: TextStyle(fontSize: 11)),
-                                        ),
-                                      )),
-                                      SizedBox(width: 15),
-                                      Expanded(
-                                          child: GestureDetector(
+                              Form(
+                                // key: _formKey,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text('Quierés cerrar sesión?'),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                                child: GestureDetector(
                                               onTap: () {
-                                                print('Se cerró la sesión');
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) {
-                                                  return Home();
-                                                }));
+                                                Navigator.pop(context);
                                               },
                                               child: Container(
                                                 alignment: Alignment.center,
@@ -230,35 +276,88 @@ class _ProfileState extends State {
                                                         BorderRadius.circular(
                                                             30),
                                                     border: Border.all(
-                                                        color: Colors.red,
+                                                        color: Colors.grey,
                                                         width: 2)),
-                                                child: Text('ACEPTAR',
+                                                child: Text('CANCELAR',
                                                     style: TextStyle(
-                                                        fontSize: 13)),
-                                              ))),
-                                    ],
-                                  ))
+                                                        fontSize: 11)),
+                                              ),
+                                            )),
+                                            SizedBox(width: 15),
+                                            Expanded(
+                                                child: GestureDetector(
+                                                    onTap: () {
+                                                      print(
+                                                          'Se cerró la sesión');
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return Home();
+                                                      }));
+                                                    },
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(30),
+                                                          border: Border.all(
+                                                              color: Colors.red,
+                                                              width: 2)),
+                                                      child: Text('ACEPTAR',
+                                                          style: TextStyle(
+                                                              fontSize: 13)),
+                                                    ))),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.red),
-                borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
-            height: 50,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [Text('Cerrar sesión'), Icon(Icons.logout)],
-            ),
-          ),
-        )
+                        );
+                      });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red),
+                      borderRadius: BorderRadius.circular(20)),
+                  margin:
+                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 50),
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [Text('Cerrar sesión'), Icon(Icons.logout)],
+                  ),
+                ),
+              )
+            :
+//CANCELAR
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    edit = false;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red),
+                      borderRadius: BorderRadius.circular(20)),
+                  margin:
+                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 50),
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [Text('Cancelar'), Icon(Icons.logout)],
+                  ),
+                ),
+              ),
       ],
     );
   }
