@@ -1,5 +1,11 @@
+import 'package:camba/Api/consultas.dart';
+import 'package:camba/Home/home.dart';
 import 'package:camba/Login/register.dart';
+import 'package:camba/Pages/homeInit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+
+// import 'dart:html';
 
 class Login extends StatefulWidget {
   @override
@@ -9,6 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State {
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  bool _passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +43,10 @@ class _LoginState extends State {
                             height: 50,
                           ),
                           Container(
-                            padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
                             margin: EdgeInsets.only(left: 10, right: 10),
-                            height: 60,
+                            height: 50,
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black),
                                 color: Colors.white,
@@ -62,28 +70,37 @@ class _LoginState extends State {
                           ),
                           SizedBox(height: 20),
                           Container(
-                            padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
-                            margin: EdgeInsets.only(left: 10, right: 10),
-                            height: 60,
+                            padding: EdgeInsets.only(left: 20, right: 10),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black),
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10)),
+                            margin: EdgeInsets.only(left: 10, right: 10),
+                            height: 50,
+                            width: double.infinity,
                             child: TextField(
-                              keyboardType: TextInputType.visiblePassword,
                               cursorColor: Colors.black,
+                              keyboardType: TextInputType.text,
                               controller: passController,
-                              textInputAction: TextInputAction.search,
+                              obscureText:
+                                  !_passwordVisible, //This will obscure text dynamically
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.lock_outlined,
-                                  color: Colors.grey,
+                                hintText: 'Añade una nueva contraseña',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
                                 ),
-                                hintText: 'Contraseña',
-                                hintStyle: TextStyle(color: Colors.black),
                               ),
-                              style: TextStyle(color: Colors.black),
                             ),
                           ),
                           SizedBox(height: 5),
@@ -94,8 +111,43 @@ class _LoginState extends State {
                             ),
                           ),
                           GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
+                              onTap: () async {
+                                var email =
+                                    emailController.value.text.toString();
+                                var pass = passController.value.text.toString();
+
+                                var apiResponse =
+                                    await Consultas().login(email, pass);
+
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+
+                                var userId = prefs.getInt('userId');
+
+                                print(' este es el id del user $userId');
+
+                                if (apiResponse['message'] == 'Unauthorized' ||
+                                    passController.value.text.isEmpty ||
+                                    emailController.value.text.isEmpty) {
+                                  final snackBar = SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text('Credenciales incorrectos'),
+                                    action: SnackBarAction(
+                                      label: '',
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  print(apiResponse);
+                                } else {
+                                  print(' en teoria autorizado');
+                                  print(apiResponse);
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Home();
+                                  }));
+                                }
                               },
                               child: Container(
                                 alignment: Alignment.center,

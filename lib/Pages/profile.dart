@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/home.dart';
 import 'package:camba/Login/editProfile.dart';
 import 'package:camba/Pages/misCambas.dart';
 import 'package:camba/Pages/misPropuestas.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
@@ -11,11 +15,25 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State {
   final emailController = TextEditingController();
   var edit = false;
+  File? _image;
+  final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: _body(),
     );
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 
   Widget _body() {
@@ -41,11 +59,15 @@ class _ProfileState extends State {
                   margin: EdgeInsets.only(top: 30),
                   height: 80,
                   width: 80,
-                  child: Icon(
-                    Icons.person,
-                    size: 70,
-                    color: Colors.grey,
-                  ),
+                  child: _image == null
+                      ? Icon(
+                          Icons.person,
+                          size: 70,
+                          color: Colors.grey,
+                        )
+                      : Image.file(
+                          _image!,
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -68,10 +90,7 @@ class _ProfileState extends State {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return MisCambas();
-                    }));
+                    getImage();
                   },
                   child: Container(
                       height: 30, width: 90, child: Text('EDITAR \nPERFIL')),
@@ -82,10 +101,9 @@ class _ProfileState extends State {
                 ),
                 GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return MisPropuestas();
-                      }));
+                      setState(() {
+                        _image = null;
+                      });
                     },
                     child: Container(
                         height: 30,
@@ -128,6 +146,7 @@ class _ProfileState extends State {
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.only(left: 20, right: 20),
+                padding: EdgeInsets.only(top: 3),
                 height: 50,
                 width: double.infinity,
                 child: TextField(
@@ -171,7 +190,7 @@ class _ProfileState extends State {
                 )
               ],
             )),
-//IR A CAMBACHIVAVHEAR (HOME)
+//USUARIO
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Text('Usuario'),
@@ -196,6 +215,57 @@ class _ProfileState extends State {
                 )
               ],
             )),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text('Teléfono'),
+        ),
+        edit == false
+            ? Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, right: 20),
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Icon(Icons.call, color: Colors.grey),
+                    ),
+                    Text(
+                      '(0982) 763 732',
+                      style: TextStyle(fontSize: 16),
+                    )
+                  ],
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, right: 20),
+                padding: EdgeInsets.only(top: 3),
+                height: 50,
+                width: double.infinity,
+                child: TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.black,
+                  controller: emailController,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.call,
+                      color: Colors.grey,
+                    ),
+                    hintText: 'Número de teléfono',
+                    hintStyle: TextStyle(color: Colors.black),
+                  ),
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
         edit == false
             ? GestureDetector(
                 onTap: () {
@@ -354,7 +424,10 @@ class _ProfileState extends State {
                   width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [Text('Cancelar'), Icon(Icons.logout)],
+                    children: [
+                      Text('Cancelar'),
+                      Icon(Icons.arrow_back_ios_sharp)
+                    ],
                   ),
                 ),
               ),

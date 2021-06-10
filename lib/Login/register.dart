@@ -1,3 +1,5 @@
+import 'package:camba/Api/consultas.dart';
+import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/profile.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class _RegisterState extends State {
   var permiso = true;
 
   bool _validate = false;
+
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +66,6 @@ class _RegisterState extends State {
                                 controller: nameController,
                                 textInputAction: TextInputAction.search,
                                 decoration: InputDecoration(
-                                  errorText: _validate
-                                      ? 'Value Can\'t Be Empty'
-                                      : null,
                                   border: InputBorder.none,
                                   hintText: 'Nombre y Apellido',
                                   prefixIcon: Icon(
@@ -147,42 +148,67 @@ class _RegisterState extends State {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-                              margin:
-                                  EdgeInsets.only(left: 10, top: 20, right: 10),
-                              height: 50,
+                              padding: EdgeInsets.only(left: 20, right: 10),
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.black),
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10)),
+                              margin:
+                                  EdgeInsets.only(left: 10, top: 20, right: 10),
+                              height: 50,
+                              width: double.infinity,
                               child: TextField(
                                 cursorColor: Colors.black,
+                                keyboardType: TextInputType.text,
                                 controller: passController,
-                                textInputAction: TextInputAction.search,
+                                obscureText:
+                                    !_passwordVisible, //This will obscure text dynamically
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: 'Contraseña',
-                                  prefixIcon: Icon(Icons.lock_outlined,
-                                      color: Colors.grey),
-                                  hintStyle: TextStyle(color: Colors.black),
+                                  hintText: 'Añade una contraseña',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _passwordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
+                                  ),
                                 ),
-                                style: TextStyle(color: Colors.black),
                               ),
                             ),
-                            permiso == false
-                                ? Padding(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: Text(
-                                        'Completa correctamente todos los campos*',
-                                        style: TextStyle(color: Colors.red)),
-                                  )
-                                : Container(),
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                var nombre =
+                                    nameController.value.text.toString();
+                                var email =
+                                    emailController.value.text.toString();
+                                var telefono =
+                                    phoneController.value.text.toString();
+                                var userName =
+                                    nickNameController.value.text.toString();
+                                var pass = passController.value.text.toString();
+                                var imagen = '';
+                                var apiResponse = await Consultas().register(
+                                    nombre,
+                                    email,
+                                    telefono,
+                                    userName,
+                                    pass,
+                                    imagen);
+                                print(apiResponse);
                                 setState(() {
                                   emailController.text.isNotEmpty &&
                                           nameController.text.isNotEmpty &&
                                           passController.text.isNotEmpty &&
+                                          passController.value.text.characters
+                                                  .length >=
+                                              6 &&
                                           nickNameController.text.isNotEmpty &&
                                           phoneController.text.isNotEmpty
                                       ? _validate = true
@@ -191,16 +217,28 @@ class _RegisterState extends State {
                                 bool emailValid = RegExp(
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(emailController.text);
-                                if (emailValid && _validate) {
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    permiso = true;
-                                  });
+                                if (apiResponse['message'] ==
+                                    "Usuario creado exitosamente") {
+                                  print(emailController.value.text);
+                                  print('permiso concedido');
+                                  permiso = true;
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Home();
+                                  }));
                                 } else {
-                                  setState(() {
-                                    permiso = false;
-                                  });
-                                  print('no permitido');
+                                  permiso = false;
+                                  final snackBar = SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text(
+                                        'Completa todos los campos correctamente *'),
+                                    action: SnackBarAction(
+                                      label: '',
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                 }
                               },
                               child: Container(

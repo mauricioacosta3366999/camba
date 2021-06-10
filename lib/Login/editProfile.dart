@@ -1,6 +1,4 @@
 import 'package:camba/Home/home.dart';
-import 'package:camba/Pages/homeInit.dart';
-import 'package:camba/Pages/profile.dart';
 import 'package:flutter/material.dart';
 
 class EditProfile extends StatefulWidget {

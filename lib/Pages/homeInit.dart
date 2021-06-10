@@ -31,12 +31,12 @@ class _HomeInitState extends State {
   }
 
   void _inicializate() async {
-    var categoryFilter = 'Todos';
-    cambas = await Consultas().getCambas(0);
-    print(cambas!.message!.cambas!.original!.length);
+    var categoryFilter = "Todos";
+    cambas = await Consultas().getCambas(0, categoryFilter);
+    // print(cambas!.message!.cambas!.original!.length);
     datosCambas = cambas!.message!.cambas!.original!;
-    print(
-        'estos son los datas del home ${cambas?.message?.cambas?.original?[0].descripcion}');
+    // print(
+    //     'estos son los datas del home ${cambas?.message?.cambas?.original?[0].descripcion}');
     setState(() {
       page = cambas!.message!.last!;
       cargado = true;
@@ -44,7 +44,8 @@ class _HomeInitState extends State {
   }
 
   fun() async {
-    print('ENTRO DENTRO DEL SRCROLL');
+    var categoryFilter = "Todos";
+    // print('ENTRO DENTRO DEL SRCROLL');
     if (_scrollController!.offset >=
             _scrollController!.position.maxScrollExtent &&
         !_scrollController!.position.outOfRange) {
@@ -53,20 +54,20 @@ class _HomeInitState extends State {
           saltar = false;
         });
       } else {
-        print('ENTRO DENTRO DEL SRCROLL2');
-        CambasModel cambas2 = await Consultas().getCambas(page);
+        // print('ENTRO DENTRO DEL SRCROLL2');
+        CambasModel cambas2 = await Consultas().getCambas(page, categoryFilter);
         cambas2.message!.cambas!.original!.forEach((element) {
-          print("2 ${element.tituloCamba}");
+          // print("2 ${element.tituloCamba}");
         });
         for (var item in cambas2.message!.cambas!.original!) {
           datosCambas!.add(item);
         }
         datosCambas?.forEach((element) {
-          print("1  ${element.tituloCamba}");
+          // print("1  ${element.tituloCamba}");
         });
 
-        print(datosCambas!.length);
-        print(cambas2.message!.cambas!.original!.length);
+        // print(datosCambas!.length);
+        // print(cambas2.message!.cambas!.original!.length);
         setState(() {
           page = cambas2.message!.last!;
           datosCambas;
