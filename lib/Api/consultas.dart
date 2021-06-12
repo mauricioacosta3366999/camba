@@ -114,4 +114,26 @@ class Consultas {
     print(responde);
     return responde;
   }
+
+  Future propuestasRecibidas() async {
+
+    var response;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getInt('userId');
+
+    final createUrl = Uri.parse('$api/cambas/obtener_propuestas_recibidas');
+
+    final res = await http.post(createUrl, body: {"user_id": userId == null ? '1' : userId.toString()});
+
+    print(res.statusCode);
+
+    if (res.statusCode == 200) {
+      response = json.decode(res.body);
+    } else {
+      response = [];
+    }
+
+    return response;
+  }
 }

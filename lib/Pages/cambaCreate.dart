@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:camba/Api/Models/categories.dart';
 import 'package:camba/Api/consultas.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class cambaCreate extends StatefulWidget {
   cambaCreateState createState() => cambaCreateState();
@@ -20,11 +26,83 @@ class cambaCreateState extends State<cambaCreate> {
   File? _image;
   final picker = ImagePicker();
   List imagenes = [];
+  List<String> imagenes64 = [];
   late Categories categories;
   var categorySelected = '';
 
   Map<String, dynamic> data = {};
   List<Widget> childrens = [];
+
+  Map<String, dynamic> newCamba = {
+    "titulo_camba" : '',
+    "descripcion" : '',
+    "precio_estimado" : '',
+    "categoria_ids" : '',
+    "user_id" : '',
+    "tipo": '1',
+    "camba_id": '1'
+  };
+
+  Future<void> crearCanva() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final createUrl = Uri.parse('https://cambachivache.net:9000/api/cambas/crear');
+      var userId = prefs.getInt('userId');
+
+      setState(() {
+        // TODO: Asigned user_id.
+
+        // No se asigno el valor del preferences porque podes entrar a esta
+        // seccion sin estar logueado lo cual crea un error al consultar el dato del shared_preferences.
+        // faltaría agregar una validación para que sólo entre usuarios logueados.
+        newCamba['user_id'] = '1';
+        newCamba['tipo'] = '1';
+      });
+
+      final res = await http.post(createUrl, body: newCamba);
+
+      final response = json.decode(res.body);
+
+      print(response.toString());
+
+      if (res.statusCode == 200) {
+        uploadConvertAndUpload(response['id'].toString());
+
+      } else {
+        // TODO: View error message.
+        print("Ocurrio un error");
+      }
+
+    }catch (_) {
+    // TODO: View catch message.
+     print("Error crate camba");
+    }
+  }
+
+  void uploadConvertAndUpload(cambiaId) async {
+
+    imagenes64.forEach((element) {
+      imageUpload(element, cambiaId);
+    });
+  }
+
+
+  Future<bool> imageUpload(img64, cambiaId) async {
+
+    final createUrl = Uri.parse('https://cambachivache.net/api/cambas/guardar_imagen');
+
+    Map<String, dynamic> body = {
+      "camba_id": cambiaId.toString(),
+      "imagen": "data:image/jpeg;base64,"+img64.toString()
+    };
+
+    // developer.log(body.toString());
+
+    final res = await http.post(createUrl, body: body);
+
+    if (res.statusCode == 200)  return true;
+    else return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +195,19 @@ class cambaCreateState extends State<cambaCreate> {
   }
 
 //OBTENER IMAGENES DEL CAMBA.
-  Future getImage() async {
+  Future<void> getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    // final File file = File(pickedFile!.path);
+    final bytes = await pickedFile!.readAsBytes();
+
+    final base64 = base64Encode(bytes);
 
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         imagenes.add(_image);
+        imagenes64.add(base64);
       } else {
         print('No image selected.');
       }
@@ -152,7 +236,12 @@ class cambaCreateState extends State<cambaCreate> {
               border: Border.all(color: Colors.black),
               color: Colors.white,
               borderRadius: BorderRadius.circular(10)),
-          child: TextField(
+          child: TextFormField(
+            onChanged: (value) {
+              setState(() {
+                newCamba['titulo_camba'] = value;
+              });
+            },
             cursorColor: Colors.black,
             controller: titleController,
             textInputAction: TextInputAction.search,
@@ -170,7 +259,7 @@ class cambaCreateState extends State<cambaCreate> {
               color: Colors.yellow,
             ),
             margin: EdgeInsets.all(10),
-            height: 250,
+            height: 280,
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +293,7 @@ class cambaCreateState extends State<cambaCreate> {
                   ),
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: imagenes.length > 1 ? MainAxisAlignment.spaceAround : MainAxisAlignment.start,
                     children: [
                       for (var i = 0; i < imagenes.length; i++)
                         _image == null
@@ -243,8 +332,13 @@ class cambaCreateState extends State<cambaCreate> {
               border: Border.all(color: Colors.black),
               color: Colors.white,
               borderRadius: BorderRadius.circular(10)),
-          child: TextField(
-            maxLines: null,
+          child: TextFormField(
+            maxLines: 5,
+            onChanged: (value) {
+              setState(() {
+                newCamba['descripcion'] = value;
+              });
+            },
             cursorColor: Colors.black,
             controller: descriptionController,
             textInputAction: TextInputAction.search,
@@ -264,7 +358,12 @@ class cambaCreateState extends State<cambaCreate> {
               border: Border.all(color: Colors.black),
               color: Colors.white,
               borderRadius: BorderRadius.circular(10)),
-          child: TextField(
+          child: TextFormField(
+            onChanged: (value) {
+              setState(() {
+                newCamba['precio_estimado'] = value.toString();
+              });
+            },
             keyboardType: TextInputType.number,
             cursorColor: Colors.black,
             controller: priceController,
@@ -434,21 +533,23 @@ class cambaCreateState extends State<cambaCreate> {
           children: [
             GestureDetector(
               onTap: () async {
-                var titleCamba = titleController.value.text;
-                var descriptionCamba = descriptionController.value.text;
-                var priceCamba = 10000;
-                var categoriesId = '';
-                var tipoCamba = 1;
-                var idCamba = 0;
-                var apiResponse = await Consultas().cambaCreate(
-                    titleCamba,
-                    descriptionCamba,
-                    priceCamba,
-                    categoriesId,
-                    tipoCamba,
-                    idCamba);
-                print('esto es la creacion de un camba');
-                print(apiResponse);
+
+                await crearCanva();
+                // var titleCamba = titleController.value.text;
+                // var descriptionCamba = descriptionController.value.text;
+                // var priceCamba = 10000;
+                // var categoriesId = '';
+                // var tipoCamba = 1;
+                // var idCamba = 0;
+                // var apiResponse = await Consultas().cambaCreate(
+                //     titleCamba,
+                //     descriptionCamba,
+                //     priceCamba,
+                //     categoriesId,
+                //     tipoCamba,
+                //     idCamba);
+                // print('esto es la creacion de un camba');
+                // print(apiResponse);
               },
               child: Container(
                 alignment: Alignment.center,
