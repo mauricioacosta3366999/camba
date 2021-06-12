@@ -7,6 +7,7 @@ import 'package:camba/Pages/misCambas.dart';
 import 'package:camba/Pages/misPropuestas.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
@@ -359,12 +360,7 @@ class _ProfileState extends State {
                                                     onTap: () {
                                                       print(
                                                           'Se cerró la sesión');
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) {
-                                                        return Home();
-                                                      }));
+                                                      cerrar(context);
                                                     },
                                                     child: Container(
                                                       alignment:
@@ -433,5 +429,14 @@ class _ProfileState extends State {
               ),
       ],
     );
+  }
+
+  void cerrar(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+        (Route<dynamic> route) => false);
   }
 }

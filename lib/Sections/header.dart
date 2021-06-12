@@ -41,6 +41,7 @@ class _HeaderState extends State<Header> {
     setState(() {
       userId = prefs.getInt('userId')!;
     });
+    print('esto es el header del shared prefernces $userId');
   }
 
   @override
