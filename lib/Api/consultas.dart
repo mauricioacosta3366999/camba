@@ -35,14 +35,23 @@ class Consultas {
 
   Future login(String email, String pass) async {
     final loginURL = Uri.parse('$api/user/login');
-
     final res =
         await http.post(loginURL, body: {"email": email, "password": pass});
     this.responde = json.decode(res.body);
+    print(responde);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = responde['user_id'];
-    prefs.setInt('userId', userId == null ? 0 : userId);
-    print(userId);
+    String userName = responde['nombre_completo_usuario'].toString();
+    var userPhone = responde['telefono'].toString();
+    var userNickname = responde['nombre_usuario'].toString();
+    var userEmail = responde['email_usuario'].toString();
+    var userProfileApi = responde['imagen_usuario'].toString();
+    prefs.setInt('userId', userId);
+    prefs.setString('userName', userName);
+    prefs.setString('userPhone', userPhone);
+    prefs.setString('userNickname', userNickname);
+    prefs.setString('userEmail', userEmail);
+    prefs.setString('userProfileApi', userProfileApi);
     return responde;
   }
 
@@ -78,8 +87,11 @@ class Consultas {
   Future searchCamba(searchText) async {
     final registerURL = Uri.parse('$api/cambas/buscar-cambas');
 
-    final res = await http.post(registerURL, body: {"criterio": searchText});
+    final res =
+        await http.post(registerURL, body: {"criterio": searchText.toString()});
     this.responde = json.decode(res.body);
+    // print(' esto es la respuesta $responde');
+    print(searchText.toString());
     return responde;
   }
 
@@ -93,30 +105,31 @@ class Consultas {
   //   return cambasBuscados;
   // }
 
-  Future cambaCreate(titleCamba, descriptionCamba, priceCamba, categoriesId,
-      tipoCamba, idCamba) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var userId = prefs.getInt('userId');
+//? Edu lo implemento en el archivo de crear camba
 
-    final createUrl = Uri.parse('$api/cambas/crear');
+  // Future cambaCreate(titleCamba, descriptionCamba, priceCamba, categoriesId,
+  //     tipoCamba, idCamba) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var userId = prefs.getInt('userId');
 
-    final res = await http.post(createUrl, body: {
-      "titulo_camba": titleCamba,
-      "descripcion": descriptionCamba,
-      "precio_estimado": 20000,
-      "categoria_ids": "1,2",
-      "user_id": 524,
-      "tipo": 1,
-      "camba_id": 0
-    });
-    this.responde = json.decode(res.body);
-    print('esto es la consulta al crear camba');
-    print(responde);
-    return responde;
-  }
+  //   final createUrl = Uri.parse('$api/cambas/crear');
+
+  //   final res = await http.post(createUrl, body: {
+  //     "titulo_camba": titleCamba,
+  //     "descripcion": descriptionCamba,
+  //     "precio_estimado": 20000,
+  //     "categoria_ids": "1,2",
+  //     "user_id": userId,
+  //     "tipo": tipoCamba,
+  //     "camba_id": 0
+  //   });
+  //   this.responde = json.decode(res.body);
+  //   print('esto es la consulta al crear camba');
+  //   print(responde);
+  //   return responde;
+  // }
 
   Future propuestasRecibidas() async {
-
     var response;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -124,7 +137,8 @@ class Consultas {
 
     final createUrl = Uri.parse('$api/cambas/obtener_propuestas_recibidas');
 
-    final res = await http.post(createUrl, body: {"user_id": userId == null ? '1' : userId.toString()});
+    final res = await http.post(createUrl,
+        body: {"user_id": userId == null ? '1' : userId.toString()});
 
     print(res.statusCode);
 

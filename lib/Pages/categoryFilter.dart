@@ -36,7 +36,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
     cambas = await Consultas().getCambas(page, categoryFilter);
     print('Holaaaaa ${cambas!.message!.cambas!.original!.length}');
     // print(cambas!.message!.cambas!.original);
-    print(' listo es el filtro eedededes');
+    print(' listo es el filtro de Categorias');
   }
 
   Widget _body() {

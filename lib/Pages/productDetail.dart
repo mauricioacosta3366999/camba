@@ -1,3 +1,4 @@
+import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
@@ -90,7 +91,7 @@ class _ProductDetailState extends State<ProductDetail> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return HomeInit();
+                  return Home();
                 }));
               },
               child: Container(

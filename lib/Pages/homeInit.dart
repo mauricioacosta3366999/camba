@@ -143,10 +143,20 @@ class _HomeInitState extends State {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return cambaCreate();
-                                      }));
+                                      var titleEdit = 'Título del camba';
+                                      var descriptionEdit =
+                                          'Descripción de lo que tienes';
+                                      var priceEdit1 =
+                                          'Precio referencial en Gs.';
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return cambaCreate(titleEdit,
+                                                descriptionEdit, priceEdit1);
+                                          },
+                                        ),
+                                      );
                                     },
                                     child: Container(
                                       color: Colors.grey[400],

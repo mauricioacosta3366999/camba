@@ -2,6 +2,7 @@ import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/home.dart';
 import 'package:camba/Login/register.dart';
 import 'package:camba/Pages/homeInit.dart';
+import 'package:camba/Pages/invitados.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,26 @@ class _LoginState extends State {
   final passController = TextEditingController();
   bool _passwordVisible = false;
   @override
+  @override
+  void initState() {
+    super.initState();
+    session(context);
+  }
+
+  void session(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getInt('userid');
+
+    print('este es el login $userId');
+
+    if (userId != null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeInit()));
+    } else {
+      print('nunca inició sesión');
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -116,22 +137,40 @@ class _LoginState extends State {
                                     emailController.value.text.toString();
                                 var pass = passController.value.text.toString();
 
-                                var apiResponse =
-                                    await Consultas().login(email, pass);
+                                if (passController.value.text.isNotEmpty ||
+                                    emailController.value.text.isNotEmpty) {
+                                  var apiResponse =
+                                      await Consultas().login(email, pass);
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
 
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
+                                  var userId = prefs.getInt('userId');
 
-                                var userId = prefs.getInt('userId');
-
-                                print(' este es el id del user $userId');
-
-                                if (apiResponse['message'] == 'Unauthorized' ||
-                                    passController.value.text.isEmpty ||
-                                    emailController.value.text.isEmpty) {
+                                  if (apiResponse['message'] ==
+                                      'Unauthorized') {
+                                    final snackBar = SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text('Credenciales incorrectos'),
+                                      action: SnackBarAction(
+                                        label: '',
+                                        onPressed: () {},
+                                      ),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                    print(apiResponse);
+                                  } else {
+                                    print(apiResponse);
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return Home();
+                                    }));
+                                  }
+                                  print(' este es el id del user $userId');
+                                } else {
                                   final snackBar = SnackBar(
                                     backgroundColor: Colors.red,
-                                    content: Text('Credenciales incorrectos'),
+                                    content: Text('Completa todos los campos'),
                                     action: SnackBarAction(
                                       label: '',
                                       onPressed: () {},
@@ -139,14 +178,6 @@ class _LoginState extends State {
                                   );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
-                                  print(apiResponse);
-                                } else {
-                                  print(' en teoria autorizado');
-                                  print(apiResponse);
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return Home();
-                                  }));
                                 }
                               },
                               child: Container(
@@ -182,6 +213,30 @@ class _LoginState extends State {
                                   color: Color(0xff444444)),
                               child: Text(
                                 'REGISTRATE',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'ó',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return Invitados();
+                              }));
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 10, top: 5),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xff444444)),
+                              child: Text(
+                                'INGRESAR COMO INVITADO',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

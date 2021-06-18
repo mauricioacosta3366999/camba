@@ -1,12 +1,10 @@
 import 'dart:io';
 
-import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/home.dart';
-import 'package:camba/Login/editProfile.dart';
-import 'package:camba/Pages/misCambas.dart';
-import 'package:camba/Pages/misPropuestas.dart';
+import 'package:camba/Pages/invitados.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
@@ -14,6 +12,11 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State {
   final emailController = TextEditingController();
+  String userName = '';
+  String userEmail = '';
+  String userNickname = '';
+  String userPhone = '';
+  String userProfileApi = '';
   var edit = false;
   File? _image;
   final picker = ImagePicker();
@@ -24,8 +27,31 @@ class _ProfileState extends State {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    inicializate();
+  }
+
+  inicializate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName')!;
+      userEmail = prefs.getString('userEmail')!;
+      userPhone = prefs.getString('userPhone')!;
+      userNickname = prefs.getString('userNickname')!;
+      userProfileApi = prefs.getString('userProfileApi')!;
+    });
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (pickedFile != null) {
+      var userProfile = pickedFile.path.toString();
+      prefs.setString(userProfile, 'userProfile');
+    }
 
     setState(() {
       if (pickedFile != null) {
@@ -48,37 +74,43 @@ class _ProfileState extends State {
                 bottomRight: Radius.circular(30),
               ),
             ),
-            height: 200,
+            height: 250,
             width: double.infinity,
             child: Column(
               children: [
                 Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100)),
-                  margin: EdgeInsets.only(top: 30),
-                  height: 80,
-                  width: 80,
-                  child: _image == null
-                      ? Icon(
-                          Icons.person,
-                          size: 70,
-                          color: Colors.grey,
-                        )
-                      : Image.file(
-                          _image!,
-                        ),
-                ),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100)),
+                    margin: EdgeInsets.only(top: 50),
+                    height: 100,
+                    width: 100,
+                    child: _image == null
+                        ? ClipRRect(
+                            borderRadius: new BorderRadius.circular(100),
+                            child: Image.network(
+                              userProfileApi,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: new BorderRadius.circular(100),
+                            child: Image.file(
+                              _image!,
+                              fit: BoxFit.cover,
+                            ),
+                          )),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Mauricio Acosta'),
+                  child: Text(userName == '' ? 'Cargando...' : userName,
+                      style: TextStyle(fontSize: 20)),
                 )
               ],
             ),
           ),
           Container(
             padding: EdgeInsets.only(top: 10, bottom: 10),
-            margin: EdgeInsets.only(top: 150, left: 40, right: 40),
+            margin: EdgeInsets.only(top: 200, left: 40, right: 40),
             height: 90,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
@@ -136,7 +168,7 @@ class _ProfileState extends State {
                       child: Icon(Icons.person, color: Colors.grey),
                     ),
                     Text(
-                      'Mauricio Acosta',
+                      userName == '' ? 'Cargando...' : userName,
                       style: TextStyle(fontSize: 16),
                     )
                   ],
@@ -185,7 +217,7 @@ class _ProfileState extends State {
                   child: Icon(Icons.email, color: Colors.grey),
                 ),
                 Text(
-                  'mauricio.acosta@gmail.com',
+                  userEmail == '' ? 'Cargando...' : userEmail,
                   style: TextStyle(fontSize: 16),
                 )
               ],
@@ -210,7 +242,7 @@ class _ProfileState extends State {
                   child: Icon(Icons.contacts_rounded, color: Colors.grey),
                 ),
                 Text(
-                  'Macosta',
+                  userNickname == '' ? 'Cargando...' : userNickname,
                   style: TextStyle(fontSize: 16),
                 )
               ],
@@ -235,7 +267,7 @@ class _ProfileState extends State {
                       child: Icon(Icons.call, color: Colors.grey),
                     ),
                     Text(
-                      '(0982) 763 732',
+                      userPhone == '' ? 'Cargando...' : userPhone,
                       style: TextStyle(fontSize: 16),
                     )
                   ],
@@ -356,14 +388,18 @@ class _ProfileState extends State {
                                             SizedBox(width: 15),
                                             Expanded(
                                                 child: GestureDetector(
-                                                    onTap: () {
+                                                    onTap: () async {
                                                       print(
                                                           'Se cerró la sesión');
+                                                      SharedPreferences prefs =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      await prefs.clear();
                                                       Navigator.push(context,
                                                           MaterialPageRoute(
                                                               builder:
                                                                   (context) {
-                                                        return Home();
+                                                        return Invitados();
                                                       }));
                                                     },
                                                     child: Container(
@@ -419,7 +455,7 @@ class _ProfileState extends State {
                       border: Border.all(color: Colors.red),
                       borderRadius: BorderRadius.circular(20)),
                   margin:
-                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 50),
+                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 0),
                   height: 50,
                   width: double.infinity,
                   child: Row(
@@ -431,6 +467,24 @@ class _ProfileState extends State {
                   ),
                 ),
               ),
+        edit == true
+            ? GestureDetector(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.green),
+                      borderRadius: BorderRadius.circular(20)),
+                  margin:
+                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 50),
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [Text('Guardar'), Icon(Icons.save)],
+                  ),
+                ),
+              )
+            : Container()
       ],
     );
   }
