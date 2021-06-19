@@ -3,6 +3,7 @@ import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -201,6 +202,15 @@ class _RegisterState extends State {
                                     userName,
                                     pass,
                                     imagen);
+
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString('userName', nombre);
+                                prefs.setString('userPhone', telefono);
+                                prefs.setString('userNickname', userName);
+                                prefs.setString('userEmail', email);
+                                prefs.setString('userProfileApi', imagen);
+
                                 print(apiResponse);
                                 setState(() {
                                   emailController.text.isNotEmpty &&
@@ -217,8 +227,9 @@ class _RegisterState extends State {
                                 bool emailValid = RegExp(
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(emailController.text);
-                                if (apiResponse['message'] ==
-                                    "Usuario creado exitosamente") {
+                                if (emailValid &&
+                                    apiResponse['message'] ==
+                                        "Usuario creado exitosamente") {
                                   print(emailController.value.text);
                                   print('permiso concedido');
                                   permiso = true;

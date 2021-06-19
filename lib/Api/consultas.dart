@@ -42,16 +42,30 @@ class Consultas {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = responde['user_id'];
     String userName = responde['nombre_completo_usuario'].toString();
-    var userPhone = responde['telefono'].toString();
-    var userNickname = responde['nombre_usuario'].toString();
-    var userEmail = responde['email_usuario'].toString();
-    var userProfileApi = responde['imagen_usuario'].toString();
+    String userPhone = responde['telefono'].toString();
+    String userNickname = responde['nombre_usuario'].toString();
+    String userEmail = responde['email_usuario'].toString();
+    String userProfileApi = responde['imagen_usuario'].toString();
     prefs.setInt('userId', userId);
     prefs.setString('userName', userName);
     prefs.setString('userPhone', userPhone);
     prefs.setString('userNickname', userNickname);
     prefs.setString('userEmail', userEmail);
     prefs.setString('userProfileApi', userProfileApi);
+    return responde;
+  }
+
+  Future userUpdate(String newNombre, String newPhone) async {
+    final userUpdateUrl = Uri.parse('$api/user/editar_perfil');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getInt('userId');
+    print('antes de entrar a la prepa : $newNombre y $newPhone y $userId');
+    final res = await http.post(userUpdateUrl, body: {
+      "usuario_id": userId.toString(),
+      "nombre": newNombre.toString(),
+      "telefono": newPhone.toString(),
+    });
+    this.responde = json.decode(res.body);
     return responde;
   }
 

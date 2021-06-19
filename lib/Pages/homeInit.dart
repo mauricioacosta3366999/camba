@@ -17,6 +17,7 @@ class _HomeInitState extends State {
   List<Original>? datosCambas = [];
   ScrollController? _scrollController;
   bool cargado = false;
+  var loaderScroll = false;
   int page = 0;
   bool saltar = true;
   @override
@@ -54,7 +55,10 @@ class _HomeInitState extends State {
           saltar = false;
         });
       } else {
-        // print('ENTRO DENTRO DEL SRCROLL2');
+        print('ENTRO DENTRO DEL SRCROLL2');
+        setState(() {
+          loaderScroll = true;
+        });
         CambasModel cambas2 = await Consultas().getCambas(page, categoryFilter);
         cambas2.message!.cambas!.original!.forEach((element) {
           // print("2 ${element.tituloCamba}");
@@ -69,6 +73,7 @@ class _HomeInitState extends State {
         // print(datosCambas!.length);
         // print(cambas2.message!.cambas!.original!.length);
         setState(() {
+          loaderScroll = false;
           page = cambas2.message!.last!;
           datosCambas;
         });
@@ -163,10 +168,12 @@ class _HomeInitState extends State {
                                       margin: EdgeInsets.all(20),
                                       height: 150,
                                       width: double.infinity,
-                                      child: Image.network(datosCambas![i]
-                                          .imagenes![0]
-                                          .pathImagen1920
-                                          .toString()),
+                                      child: Image.network(
+                                          datosCambas![i]
+                                              .imagenes![0]
+                                              .pathImagen1920
+                                              .toString(),
+                                          fit: BoxFit.cover),
                                     ),
                                   ),
                                   Container(
@@ -241,10 +248,26 @@ class _HomeInitState extends State {
                             ),
                         ],
                       ),
-                    )
+                    ),
+                    loaderScroll == true
+                        ? Container(
+                            margin: EdgeInsets.only(top: 20, bottom: 50),
+                            child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.yellow)))
+                        : Container()
                   ],
                 )
-              : Container()),
+              : Column(
+                  children: [
+                    Header(),
+                    SizedBox(height: 100),
+                    Container(
+                        child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.yellow))),
+                  ],
+                )),
     );
   }
 }

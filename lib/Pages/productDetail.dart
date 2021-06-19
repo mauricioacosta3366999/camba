@@ -34,7 +34,9 @@ class _ProductDetailState extends State<ProductDetail> {
           margin: EdgeInsets.all(20),
           height: 200,
           width: double.infinity,
-          child: Image.network(widget.cambaImage),
+          child: Image.network(
+            widget.cambaImage,
+          ),
         ),
         Container(
           alignment: Alignment.center,

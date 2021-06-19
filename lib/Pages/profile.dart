@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:camba/Home/home.dart';
+import 'package:camba/Api/consultas.dart';
 import 'package:camba/Pages/invitados.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +12,9 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State {
   final emailController = TextEditingController();
+  var newNameController = TextEditingController();
+  var newPhoneController = TextEditingController();
+  String profileDefault = 'https://cambachivache.net/avatar/avatar.jpg';
   String userName = '';
   String userEmail = '';
   String userNickname = '';
@@ -41,6 +44,19 @@ class _ProfileState extends State {
       userPhone = prefs.getString('userPhone')!;
       userNickname = prefs.getString('userNickname')!;
       userProfileApi = prefs.getString('userProfileApi')!;
+    });
+  }
+
+  void profileUpdate(String newNombre, String newPhone) async {
+    print('antes de entrar a la consulta : $newNombre y $newPhone');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var apiResponde = await Consultas().userUpdate(newNombre, newPhone);
+    print('esta es la respuesta del update $apiResponde');
+    setState(() {
+      prefs.setString('userName', newNombre);
+      prefs.setString('userPhone', newPhone);
+      userName = newNombre;
+      userPhone = newPhone;
     });
   }
 
@@ -79,27 +95,30 @@ class _ProfileState extends State {
             child: Column(
               children: [
                 Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100)),
-                    margin: EdgeInsets.only(top: 50),
-                    height: 100,
-                    width: 100,
-                    child: _image == null
-                        ? ClipRRect(
-                            borderRadius: new BorderRadius.circular(100),
-                            child: Image.network(
-                              userProfileApi,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: new BorderRadius.circular(100),
-                            child: Image.file(
-                              _image!,
-                              fit: BoxFit.cover,
-                            ),
-                          )),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100)),
+                  margin: EdgeInsets.only(top: 50),
+                  height: 100,
+                  width: 100,
+                  child: _image == null
+                      ? ClipRRect(
+                          borderRadius: new BorderRadius.circular(100),
+                          child: Image.network(
+                            userProfileApi == ''
+                                ? profileDefault
+                                : userProfileApi,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: new BorderRadius.circular(100),
+                          child: Image.file(
+                            _image!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(userName == '' ? 'Cargando...' : userName,
@@ -184,7 +203,7 @@ class _ProfileState extends State {
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.black,
-                  controller: emailController,
+                  controller: newNameController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -284,7 +303,7 @@ class _ProfileState extends State {
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: Colors.black,
-                  controller: emailController,
+                  controller: newPhoneController,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -395,12 +414,15 @@ class _ProfileState extends State {
                                                           await SharedPreferences
                                                               .getInstance();
                                                       await prefs.clear();
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) {
-                                                        return Invitados();
-                                                      }));
+                                                      Navigator.of(context)
+                                                          .pushAndRemoveUntil(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Invitados()),
+                                                              (Route<dynamic>
+                                                                      route) =>
+                                                                  false);
                                                     },
                                                     child: Container(
                                                       alignment:
@@ -469,7 +491,27 @@ class _ProfileState extends State {
               ),
         edit == true
             ? GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (newNameController.value.text.isNotEmpty &&
+                      newPhoneController.value.text.isNotEmpty) {
+                    setState(() {
+                      edit = false;
+                    });
+                    var newName = newNameController.value.text;
+                    var newPhone = newPhoneController.value.text;
+                    profileUpdate(newName, newPhone);
+                  } else {
+                    final snackBar = SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text('Ambos campos son obligatorios *'),
+                      action: SnackBarAction(
+                        label: '',
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
                 child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.green),

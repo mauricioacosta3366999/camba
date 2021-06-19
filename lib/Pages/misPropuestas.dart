@@ -1,8 +1,5 @@
 import 'package:camba/Api/consultas.dart';
-import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/cambaCreado.dart';
-import 'package:camba/Pages/cambaCreate.dart';
-import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
@@ -45,6 +42,7 @@ class _MisPropuestasState extends State<MisPropuestas> {
   }
 
   Widget _body() {
+    print('misprpuestas $misPropuestas');
     return loader == true
         ? Column(
             children: [
@@ -71,6 +69,12 @@ class _MisPropuestasState extends State<MisPropuestas> {
                 height: 15,
                 thickness: 1,
               ),
+              misPropuestas == []
+                  ? Text(
+                      'Sin datos',
+                      style: TextStyle(color: Colors.black, fontSize: 30),
+                    )
+                  : Text('Sin Propuestas'),
               for (var i = 0; i < misPropuestas.length; i++)
                 Container(
                   decoration: BoxDecoration(
