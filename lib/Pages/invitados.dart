@@ -219,6 +219,7 @@ class _InvitadosState extends State {
                                         var cambaPrice = datosCambas![i]
                                             .precioEstimado
                                             .toString();
+                                        var cambaId = datosCambas![i].id;
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -227,7 +228,8 @@ class _InvitadosState extends State {
                                                   cambaName,
                                                   cambaDescription,
                                                   cambaImage,
-                                                  cambaPrice);
+                                                  cambaPrice,
+                                                  cambaId);
                                             },
                                           ),
                                         );

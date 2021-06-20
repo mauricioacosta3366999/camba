@@ -1,16 +1,18 @@
 import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/homeInit.dart';
+import 'package:camba/Pages/sendProposal.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ProductDetail extends StatefulWidget {
+  var cambaId;
   String cambaName;
   String cambaDescription;
   String cambaImage;
   String cambaPrice;
-  ProductDetail(
-      this.cambaName, this.cambaDescription, this.cambaImage, this.cambaPrice,
+  ProductDetail(this.cambaName, this.cambaDescription, this.cambaImage,
+      this.cambaPrice, this.cambaId,
       {Key? key})
       : super(key: key);
   _ProductDetailState createState() => _ProductDetailState();
@@ -93,7 +95,7 @@ class _ProductDetailState extends State<ProductDetail> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return Home();
+                  return sendProposal();
                 }));
               },
               child: Container(

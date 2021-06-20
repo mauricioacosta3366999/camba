@@ -42,30 +42,14 @@ class _HomePageState extends State<Home> {
           var titleEdit = 'Título del camba';
           var descriptionEdit = 'Descripción de lo que tienes';
           var priceEdit1 = 'Precio referencial en Gs.';
-          var userId = 0;
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          userId = prefs.getInt('userId')!;
-          if (userId != 0) {
-            print('este es el id de mi usuario $userId');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return cambaCreate(titleEdit, descriptionEdit, priceEdit1);
-                },
-              ),
-            );
-          } else {
-            final snackBar = SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Necesitas una cuenta para crear un camba'),
-              action: SnackBarAction(
-                label: '',
-                onPressed: () {},
-              ),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return cambaCreate(titleEdit, descriptionEdit, priceEdit1);
+              },
+            ),
+          );
         },
         child: Image.asset('assets/images/ic_new_camba.png'),
         backgroundColor: Colors.yellow,

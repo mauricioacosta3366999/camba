@@ -685,6 +685,8 @@ class cambaCreateState extends State<cambaCreate> {
                       var descriptionCamba = descriptionController.value.text;
                       var priceCamba = priceController.value.text.toString();
                       List cambaImages = imagenes;
+                      var cambaId = 0;
+                      String propuesta = 'no';
                       print(
                           'esto es la coleccion de imagenes al crear un camba $cambaImages');
                       if (imagenes.length != 0 &&
@@ -700,7 +702,9 @@ class cambaCreateState extends State<cambaCreate> {
                                   descriptionCamba,
                                   priceCamba,
                                   cambaImages,
-                                  categoriasSeleccionadas)),
+                                  categoriasSeleccionadas,
+                                  cambaId,
+                                  propuesta)),
                         );
                         setState(() {
                           loader = false;

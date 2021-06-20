@@ -1,15 +1,24 @@
+import 'package:camba/Api/consultas.dart';
 import 'package:camba/Pages/cambaCreate.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:flutter/material.dart';
 
 class CambaCreado extends StatefulWidget {
+  String propuesta;
+  var cambaId;
   String titleCamba;
   String descriptionCamba;
   String priceCamba;
   List categoriasSeleccionadas;
   List cambaImages;
-  CambaCreado(this.titleCamba, this.descriptionCamba, this.priceCamba,
-      this.cambaImages, this.categoriasSeleccionadas,
+  CambaCreado(
+      this.titleCamba,
+      this.descriptionCamba,
+      this.priceCamba,
+      this.cambaImages,
+      this.categoriasSeleccionadas,
+      this.cambaId,
+      this.propuesta,
       {Key? key})
       : super(key: key);
 
@@ -18,11 +27,33 @@ class CambaCreado extends StatefulWidget {
 }
 
 class CambaCreadoState extends State<CambaCreado> {
+  final _formKey = GlobalKey<FormState>();
+  List propuestas = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(child: _body()),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.cambaId);
+    peticion();
+  }
+
+  void peticion() async {
+    var cambaId = widget.cambaId.toString();
+    var apiResponse = await Consultas().getCamba(cambaId);
+    setState(() {
+      propuestas =
+          apiResponse["message"]["resultado"]["original"]["propuestas"];
+      for (var i = 0; i < propuestas.length; i++) {
+        print('esta es la imagen numero $i');
+        print(propuestas[i]["imagenes"]);
+      }
+    });
   }
 
   Widget _body() {
@@ -184,10 +215,219 @@ class CambaCreadoState extends State<CambaCreado> {
             ),
           ),
         ),
+        widget.propuesta == 'si'
+            ? Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'Propuestas Recibidas :',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+                    ),
+                    for (var i = 0; i < propuestas.length; i++)
+                      Wrap(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.grey)),
+                            width: double.infinity,
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, bottom: 30),
+                            child: Column(
+                              children: [
+                                Container(
+                                    color: Colors.grey[400],
+                                    margin: EdgeInsets.all(20),
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: propuestas[i]['imagenes'].isEmpty
+                                        ? Image.asset(
+                                            'assets/images/cambasinfoto.jpg',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            propuestas[i]['imagenes'][0]
+                                                    ['path_imagen_1920']
+                                                .toString(),
+                                            fit: BoxFit.cover,
+                                          )),
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(
+                                      left: 20, right: 20, bottom: 10),
+                                  width: double.infinity,
+                                  child: Text(
+                                    'Propuesta recibida de: ' +
+                                        propuestas[i]["usuario"]["name"],
+                                    style: TextStyle(
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    var nombre =
+                                        propuestas[i]["usuario"]["user_name"];
+                                    var mensaje = propuestas[i]["descripción"];
+                                    String imagen =
+                                        propuestas[i]["imagenes"].isEmpty
+                                            ? ''
+                                            : propuestas[i]["imagenes"][0]
+                                                ["path_imagen_1920"];
+                                    show(nombre, mensaje, imagen);
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                        left: 20,
+                                        top: 10,
+                                        right: 20,
+                                        bottom: 20),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Color(0xff444444)),
+                                    child: Text(
+                                      'VER PROPUESTA',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                  ],
+                ),
+              )
+            : Container(),
         SizedBox(
           height: 50,
-        )
+        ),
       ],
     );
+  }
+
+  void show(nombre, mensaje, imagen) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: CircleAvatar(
+                      child: Icon(Icons.close),
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                              height: 180,
+                              width: 150,
+                              color: Colors.grey,
+                              child: imagen == ''
+                                  ? Image.asset(
+                                      'assets/images/cambasinfoto.jpg',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(imagen)),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 20, bottom: 5),
+                                child: ClipRRect(
+                                  borderRadius: new BorderRadius.circular(100),
+                                  child: Image.network(
+                                    "https://cambachivache.net:9000//avatar/avatar.jpg",
+                                    height: 70,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Text(nombre),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.green),
+                                    borderRadius: BorderRadius.circular(20)),
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    left: 10, bottom: 5, top: 5),
+                                height: 40,
+                                width: 100,
+                                child: Text('Aceptar'),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  final snackBar = SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text('Se rechazó la propuesta'),
+                                    action: SnackBarAction(
+                                      label: '',
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.red),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(left: 10, top: 5),
+                                  height: 40,
+                                  width: 100,
+                                  child: Text('Rechazar'),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15, left: 10),
+                            child: Text("Mensaje: "),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15, left: 5),
+                            child: Text(mensaje == null
+                                ? "No dejó ningun mensaje"
+                                : mensaje),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

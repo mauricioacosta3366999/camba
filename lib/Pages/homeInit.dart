@@ -212,6 +212,7 @@ class _HomeInitState extends State {
                                       var cambaPrice = datosCambas![i]
                                           .precioEstimado
                                           .toString();
+                                      var cambaId = datosCambas![i].id;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -220,7 +221,8 @@ class _HomeInitState extends State {
                                                 cambaName,
                                                 cambaDescription,
                                                 cambaImage,
-                                                cambaPrice);
+                                                cambaPrice,
+                                                cambaId);
                                           },
                                         ),
                                       );

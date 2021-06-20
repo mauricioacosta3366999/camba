@@ -42,7 +42,6 @@ class _MisPropuestasState extends State<MisPropuestas> {
   }
 
   Widget _body() {
-    print('misprpuestas $misPropuestas');
     return loader == true
         ? Column(
             children: [
@@ -74,7 +73,7 @@ class _MisPropuestasState extends State<MisPropuestas> {
                       'Sin datos',
                       style: TextStyle(color: Colors.black, fontSize: 30),
                     )
-                  : Text('Sin Propuestas'),
+                  : Text(''),
               for (var i = 0; i < misPropuestas.length; i++)
                 Container(
                   decoration: BoxDecoration(
@@ -115,16 +114,16 @@ class _MisPropuestasState extends State<MisPropuestas> {
                         ),
                       ),
                       GestureDetector(
-//EL ERROR OCURRE PORQUE ESPERA UNA TIPO DE IMAGEN DISTINTA A LA QUE RECIBE
-
                         onTap: () {
-                          var titleCamba = misPropuestas[0]['titulo_camba'];
+                          var titleCamba = misPropuestas[i]['titulo_camba'];
                           var descriptionCamba =
-                              misPropuestas[0]['descripcion'];
-                          var priceCamba = misPropuestas[0]['precio_estimado'];
+                              misPropuestas[i]['descripcion'];
+                          var priceCamba = misPropuestas[i]['precio_estimado'];
                           List cambaImages = [];
+                          int cambaId = misPropuestas[i]['id'];
                           var categoriasSeleccionadas = [];
-                          var cambaImage = misPropuestas[0]['imagenes'][0]
+                          String propuesta = 'si';
+                          var cambaImage = misPropuestas[i]['imagenes'][0]
                                   ['path_imagen_1920']
                               .toString();
                           cambaImages.add(cambaImage);
@@ -138,7 +137,9 @@ class _MisPropuestasState extends State<MisPropuestas> {
                                     descriptionCamba,
                                     priceCamba,
                                     cambaImages,
-                                    categoriasSeleccionadas)),
+                                    categoriasSeleccionadas,
+                                    cambaId,
+                                    propuesta)),
                           );
                         },
                         child: Container(

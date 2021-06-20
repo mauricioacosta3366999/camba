@@ -33,6 +33,17 @@ class Consultas {
     return cambasModel;
   }
 
+  Future getCamba(String cambaId) async {
+    final obtenerCamba = Uri.parse('$api/cambas/obtener_camba');
+
+    print('dentro del get $cambaId');
+    final res = await http.post(obtenerCamba, body: {
+      "camba_id": cambaId,
+    });
+    this.responde = json.decode(res.body);
+    return responde;
+  }
+
   Future login(String email, String pass) async {
     final loginURL = Uri.parse('$api/user/login');
     final res =
