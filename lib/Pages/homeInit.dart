@@ -146,35 +146,17 @@ class _HomeInitState extends State {
                                   left: 20, right: 20, bottom: 30),
                               child: Column(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      var titleEdit = 'Título del camba';
-                                      var descriptionEdit =
-                                          'Descripción de lo que tienes';
-                                      var priceEdit1 =
-                                          'Precio referencial en Gs.';
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return cambaCreate(titleEdit,
-                                                descriptionEdit, priceEdit1);
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.grey[400],
-                                      margin: EdgeInsets.all(20),
-                                      height: 150,
-                                      width: double.infinity,
-                                      child: Image.network(
-                                          datosCambas![i]
-                                              .imagenes![0]
-                                              .pathImagen1920
-                                              .toString(),
-                                          fit: BoxFit.cover),
-                                    ),
+                                  Container(
+                                    color: Colors.grey[400],
+                                    margin: EdgeInsets.all(20),
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: Image.network(
+                                        datosCambas![i]
+                                            .imagenes![0]
+                                            .pathImagen1920
+                                            .toString(),
+                                        fit: BoxFit.cover),
                                   ),
                                   Container(
                                     alignment: Alignment.center,

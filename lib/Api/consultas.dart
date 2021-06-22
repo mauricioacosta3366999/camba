@@ -20,6 +20,15 @@ class Consultas {
     return categories;
   }
 
+  Future getCategoriesCrear() async {
+    final obtenerCategorias =
+        Uri.parse('$api/categorias/obtener_categorias_crear_camba');
+
+    final res = await http.post(obtenerCategorias);
+    this.responde = json.decode(res.body);
+    return responde;
+  }
+
   Future<CambasModel> getCambas(int page, String categoryFilter) async {
     final obtenerCambas = Uri.parse('$api/cambas/obtener_cambas');
 

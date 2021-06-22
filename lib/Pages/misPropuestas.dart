@@ -90,8 +90,10 @@ class _MisPropuestasState extends State<MisPropuestas> {
                             margin: EdgeInsets.all(20),
                             height: 150,
                             width: double.infinity,
-                            child: Image.network(misPropuestas[i]['imagenes'][0]
-                                ['path_imagen_1920'])),
+                            child: Image.network(
+                                misPropuestas[i]['imagenes'][0]
+                                    ['path_imagen_1920'],
+                                fit: BoxFit.cover)),
                       ),
                       Container(
                         alignment: Alignment.center,

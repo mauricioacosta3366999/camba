@@ -42,6 +42,7 @@ class cambaCreateState extends State<cambaCreate> {
   late Categories categories;
   var categorySelected = '';
   var loader = false;
+  var categoriesCrear = {};
 
   Map<String, dynamic> data = {};
   List<Widget> childrens = [];
@@ -206,7 +207,7 @@ class cambaCreateState extends State<cambaCreate> {
     });
 
     listr.forEach((element) {
-      // print(element);
+      // print('elemento : $element');
     });
 
     childrens = <Widget>[
@@ -218,22 +219,25 @@ class cambaCreateState extends State<cambaCreate> {
           ),
           children: <Widget>[
             for (var ai = 0; ai < listr[i].length; ai++)
-              ExpansionTile(
-                title: GestureDetector(
-                  onTap: () {
-                    var categoriaSeleccionada = listr[i][ai].toString();
-                    categoriasSeleccionadas.add(categoriaSeleccionada);
-                    setState(() {
-                      categorySelected = listr[i][ai].toString();
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      listr[i][ai].toString() == '[]'
-                          ? ''
-                          : listr[i][ai].toString(),
-                      style: TextStyle(color: Colors.black),
+              GestureDetector(
+                onTap: () {
+                  var categoriaSeleccionada = listr[i][ai].toString();
+                  categoriasSeleccionadas.add(categoriaSeleccionada);
+                  setState(() {
+                    categorySelected = listr[i][ai].toString();
+                  });
+                },
+                child: ListTile(
+                  title: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        listr[i][ai].toString() == '[]'
+                            ? ''
+                            : listr[i][ai].toString(),
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
                 ),
@@ -254,6 +258,12 @@ class cambaCreateState extends State<cambaCreate> {
 
   void _inicializate() async {
     categories = await Consultas().getCategories();
+    categoriesCrear = await Consultas().getCategoriesCrear();
+    print('este es el creador de categorias $categoriesCrear');
+    // categoriesCrear.forEach((key, value) {
+    //   print(key);
+    //   print(value);
+    // });
   }
 
 //OBTENER IMAGENES DEL CAMBA.

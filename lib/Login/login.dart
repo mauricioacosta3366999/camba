@@ -1,5 +1,6 @@
 import 'package:camba/Api/consultas.dart';
 import 'package:camba/Home/home.dart';
+import 'package:camba/Login/passRecover.dart';
 import 'package:camba/Login/register.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/invitados.dart';
@@ -65,7 +66,7 @@ class _LoginState extends State {
                           ),
                           Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                            padding: EdgeInsets.fromLTRB(30, 5, 10, 10),
                             margin: EdgeInsets.only(left: 10, right: 10),
                             height: 50,
                             decoration: BoxDecoration(
@@ -79,8 +80,9 @@ class _LoginState extends State {
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.email_outlined,
+                                suffixIcon: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.email_outlined),
                                   color: Colors.grey,
                                 ),
                                 hintText: 'Correo Electrónico',
@@ -91,7 +93,8 @@ class _LoginState extends State {
                           ),
                           SizedBox(height: 20),
                           Container(
-                            padding: EdgeInsets.only(left: 20, right: 10),
+                            padding: EdgeInsets.only(
+                                left: 20, right: 10, top: 5, bottom: 10),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black),
                                 color: Colors.white,
@@ -107,8 +110,9 @@ class _LoginState extends State {
                                   !_passwordVisible, //This will obscure text dynamically
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Añade una nueva contraseña',
+                                hintText: 'Contraseña',
                                 suffixIcon: IconButton(
+                                  alignment: Alignment.centerLeft,
                                   icon: Icon(
                                     _passwordVisible
                                         ? Icons.visibility
@@ -125,10 +129,18 @@ class _LoginState extends State {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Text(
-                            'Olvidaste tu contraseña?  Click Aquí',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => passRecover()));
+                            },
+                            child: Text(
+                              'Olvidaste tu contraseña?  Click Aquí',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                           GestureDetector(

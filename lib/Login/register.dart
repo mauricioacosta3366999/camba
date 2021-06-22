@@ -55,7 +55,7 @@ class _RegisterState extends State {
                         child: Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
+                              padding: EdgeInsets.fromLTRB(30, 3, 20, 0),
                               margin: EdgeInsets.only(left: 10, right: 10),
                               height: 50,
                               decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class _RegisterState extends State {
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Nombre y Apellido',
-                                  prefixIcon: Icon(
+                                  suffixIcon: Icon(
                                       Icons.person_outline_outlined,
                                       color: Colors.grey),
                                   hintStyle: TextStyle(color: Colors.black),
@@ -78,7 +78,7 @@ class _RegisterState extends State {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
+                              padding: EdgeInsets.fromLTRB(30, 3, 20, 0),
                               margin:
                                   EdgeInsets.only(left: 10, top: 20, right: 10),
                               height: 50,
@@ -93,7 +93,7 @@ class _RegisterState extends State {
                                 textInputAction: TextInputAction.search,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  prefixIcon: Icon(Icons.email_outlined,
+                                  suffixIcon: Icon(Icons.email_outlined,
                                       color: Colors.grey),
                                   hintText: 'Correo Electrónico',
                                   hintStyle: TextStyle(color: Colors.black),
@@ -102,7 +102,7 @@ class _RegisterState extends State {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
+                              padding: EdgeInsets.fromLTRB(30, 3, 20, 0),
                               margin:
                                   EdgeInsets.only(left: 10, top: 20, right: 10),
                               height: 50,
@@ -117,7 +117,7 @@ class _RegisterState extends State {
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Nombre de Usuario',
-                                  prefixIcon: Icon(
+                                  suffixIcon: Icon(
                                       Icons.chrome_reader_mode_outlined,
                                       color: Colors.grey),
                                   hintStyle: TextStyle(color: Colors.black),
@@ -126,7 +126,7 @@ class _RegisterState extends State {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.fromLTRB(30, 3, 0, 0),
+                              padding: EdgeInsets.fromLTRB(30, 3, 20, 0),
                               margin:
                                   EdgeInsets.only(left: 10, top: 20, right: 10),
                               height: 50,
@@ -140,7 +140,7 @@ class _RegisterState extends State {
                                 textInputAction: TextInputAction.search,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  prefixIcon: Icon(Icons.phone_enabled_outlined,
+                                  suffixIcon: Icon(Icons.phone_enabled_outlined,
                                       color: Colors.grey),
                                   hintText: 'Número de teléfono',
                                   hintStyle: TextStyle(color: Colors.black),
@@ -166,7 +166,7 @@ class _RegisterState extends State {
                                     !_passwordVisible, //This will obscure text dynamically
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: 'Añade una contraseña',
+                                  hintText: 'Contraseña',
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       _passwordVisible
