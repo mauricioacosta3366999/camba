@@ -188,6 +188,7 @@ class _HomeInitState extends State {
                                   ),
                                   GestureDetector(
                                     onTap: () {
+                                      print(datosCambas![i]);
                                       var cambaName = datosCambas![i]
                                           .tituloCamba
                                           .toString();
@@ -198,6 +199,31 @@ class _HomeInitState extends State {
                                           .imagenes![0]
                                           .pathImagen1280
                                           .toString();
+                                      var cambaImage2 = datosCambas![i]
+                                          .imagenes![0]
+                                          .pathImagen1920
+                                          .toString();
+                                      var imageList = [];
+                                      var categories = [];
+                                      for (var j = 0;
+                                          j <
+                                              datosCambas![i]
+                                                  .categorias!
+                                                  .length;
+                                          j++) {
+                                        categories.add(datosCambas![i]
+                                            .categorias![j]
+                                            .nombreCategoria);
+                                      }
+                                      for (var j = 0;
+                                          j < datosCambas![i].imagenes!.length;
+                                          j++) {
+                                        imageList.add(datosCambas![i]
+                                            .imagenes![j]
+                                            .pathImagen1920);
+                                        print(
+                                            'este es la lista de la imagen $imageList');
+                                      }
                                       var cambaPrice = datosCambas![i]
                                           .precioEstimado
                                           .toString();
@@ -211,7 +237,10 @@ class _HomeInitState extends State {
                                                 cambaDescription,
                                                 cambaImage,
                                                 cambaPrice,
-                                                cambaId);
+                                                cambaId,
+                                                cambaImage2,
+                                                imageList,
+                                                categories);
                                           },
                                         ),
                                       );

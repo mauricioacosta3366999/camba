@@ -216,10 +216,36 @@ class _InvitadosState extends State {
                                             .imagenes![0]
                                             .pathImagen1280
                                             .toString();
+                                        var cambaImage2 = datosCambas![i]
+                                            .imagenes![0]
+                                            .pathImagen1920
+                                            .toString();
                                         var cambaPrice = datosCambas![i]
                                             .precioEstimado
                                             .toString();
                                         var cambaId = datosCambas![i].id;
+                                        var imageList = [];
+                                        var categories = [];
+                                        for (var j = 0;
+                                            j <
+                                                datosCambas![i]
+                                                    .categorias!
+                                                    .length;
+                                            j++) {
+                                          categories.add(datosCambas![i]
+                                              .categorias![j]
+                                              .nombreCategoria);
+                                        }
+                                        for (var j = 0;
+                                            j <
+                                                datosCambas![i]
+                                                    .imagenes!
+                                                    .length;
+                                            j++) {
+                                          imageList.add(datosCambas![i]
+                                              .imagenes![j]
+                                              .pathImagen1920);
+                                        }
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -229,7 +255,10 @@ class _InvitadosState extends State {
                                                   cambaDescription,
                                                   cambaImage,
                                                   cambaPrice,
-                                                  cambaId);
+                                                  cambaId,
+                                                  cambaImage2,
+                                                  imageList,
+                                                  categories);
                                             },
                                           ),
                                         );

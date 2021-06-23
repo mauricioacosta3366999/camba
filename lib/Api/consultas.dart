@@ -185,12 +185,12 @@ class Consultas {
     return response;
   }
 
-  Future aceptarPropuesta(int propuestaId) async {
+  Future aceptarPropuesta(String propuestaId, String mensaje) async {
     final aceptar = Uri.parse('$api/cambas/aceptar_rechazar_propuesta');
 
     final res = await http.post(aceptar, body: {
-      "respuesta": "Aceptada",
-      "propuesta_id": '516',
+      "respuesta": mensaje.toString(),
+      "propuesta_id": propuestaId.toString(),
     });
     this.responde = json.decode(res.body);
     return responde;

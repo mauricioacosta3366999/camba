@@ -66,7 +66,7 @@ class _LoginState extends State {
                           ),
                           Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.fromLTRB(30, 5, 10, 10),
+                            padding: EdgeInsets.fromLTRB(30, 3, 20, 0),
                             margin: EdgeInsets.only(left: 10, right: 10),
                             height: 50,
                             decoration: BoxDecoration(
@@ -93,8 +93,7 @@ class _LoginState extends State {
                           ),
                           SizedBox(height: 20),
                           Container(
-                            padding: EdgeInsets.only(
-                                left: 20, right: 10, top: 5, bottom: 10),
+                            padding: EdgeInsets.fromLTRB(30, 3, 16, 0),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black),
                                 color: Colors.white,

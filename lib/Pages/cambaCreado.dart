@@ -58,9 +58,9 @@ class CambaCreadoState extends State<CambaCreado> {
     });
   }
 
-  void aceptarPropuesta() {
-    var propuestaId = widget.cambaId;
-    var respuesta = Consultas().aceptarPropuesta(propuestaId);
+  void aceptarPropuesta(String mensaje) async {
+    var propuestaId = widget.cambaId.toString();
+    var respuesta = await Consultas().aceptarPropuesta(propuestaId, mensaje);
     print('esta es la respuesta de aceptar $respuesta');
   }
 
@@ -154,58 +154,62 @@ class CambaCreadoState extends State<CambaCreado> {
               ],
             ),
           ),
-        GestureDetector(
-          onTap: () {
-            var titleEdit = widget.titleCamba;
-            var descriptionEdit = widget.descriptionCamba;
-            var priceEdit1 = widget.priceCamba;
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    cambaCreate(titleEdit, descriptionEdit, priceEdit1),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                var titleEdit = widget.titleCamba;
+                var descriptionEdit = widget.descriptionCamba;
+                var priceEdit1 = widget.priceCamba;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        cambaCreate(titleEdit, descriptionEdit, priceEdit1),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+                height: 50,
+                width: 155,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Editar',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
-            height: 50,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Editar',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
             ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {});
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.green),
-                borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.only(left: 20, top: 20, right: 20),
-            height: 50,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Concretar',
-                  style: TextStyle(fontSize: 18),
+            GestureDetector(
+              onTap: () {
+                setState(() {});
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 20, top: 20, right: 20),
+                height: 50,
+                width: 155,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Concretar',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
         GestureDetector(
           onTap: () {
@@ -384,7 +388,8 @@ class CambaCreadoState extends State<CambaCreado> {
                               Text(nombre),
                               GestureDetector(
                                 onTap: () {
-                                  aceptarPropuesta();
+                                  var mensaje = "Aceptada";
+                                  aceptarPropuesta(mensaje);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -400,6 +405,8 @@ class CambaCreadoState extends State<CambaCreado> {
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  var mensaje = "Rechazada";
+                                  aceptarPropuesta(mensaje);
                                   Navigator.pop(context);
                                   final snackBar = SnackBar(
                                     backgroundColor: Colors.red,

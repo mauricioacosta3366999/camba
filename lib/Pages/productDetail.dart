@@ -4,15 +4,26 @@ import 'package:camba/Pages/sendProposal.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:intl/intl.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ProductDetail extends StatefulWidget {
   var cambaId;
+  var imageList;
+  var categories;
   String cambaName;
   String cambaDescription;
   String cambaImage;
+  String cambaImage2;
   String cambaPrice;
-  ProductDetail(this.cambaName, this.cambaDescription, this.cambaImage,
-      this.cambaPrice, this.cambaId,
+  ProductDetail(
+      this.cambaName,
+      this.cambaDescription,
+      this.cambaImage,
+      this.cambaPrice,
+      this.cambaId,
+      this.cambaImage2,
+      this.imageList,
+      this.categories,
       {Key? key})
       : super(key: key);
   _ProductDetailState createState() => _ProductDetailState();
@@ -20,6 +31,14 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   var f = NumberFormat('#,###', 'es_AR');
+  var categories6 = [
+    'hola',
+    'categorieas',
+    'del',
+    'dettalle',
+    'mas',
+    'por si las moscas'
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,16 +46,61 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    print(widget.categories);
+  }
+
   Widget _details() {
     return Column(
       children: [
         Header(),
-        Container(
-          color: Colors.grey[300],
-          margin: EdgeInsets.all(20),
-          height: 200,
-          width: double.infinity,
-          child: Image.network(widget.cambaImage, fit: BoxFit.cover),
+        // for (var i = 0; i < widget.imageList.length; i++)
+        //   Container(
+        //     color: Colors.grey[300],
+        //     margin: EdgeInsets.all(20),
+        //     height: 200,
+        //     width: double.infinity,
+        //     child: Image.network(widget.imageList[i], fit: BoxFit.cover),
+        //   ),
+        SizedBox(
+          height: 20,
+        ),
+        widget.imageList.length > 1
+            ? CarouselSlider(
+                options: CarouselOptions(height: 250.0),
+                items: widget.imageList.map<Widget>((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 9.0),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.black)),
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(15),
+                          child: Image.network(
+                            i,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              )
+            : Container(
+                color: Colors.grey[300],
+                margin: EdgeInsets.all(20),
+                height: 200,
+                width: double.infinity,
+                child: Image.network(widget.imageList[0], fit: BoxFit.cover),
+              ),
+        SizedBox(
+          height: 20,
         ),
         Container(
           alignment: Alignment.center,
@@ -89,10 +153,18 @@ class _ProductDetailState extends State<ProductDetail> {
             style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          width: double.infinity,
-          child: Text('Ropa y Bebe'),
+        Wrap(
+          children: [
+            for (var i = 0; i < widget.categories.length; i++)
+              Container(
+                margin:
+                    EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 10),
+                child: Text(
+                  widget.categories[i],
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

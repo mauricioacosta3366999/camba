@@ -136,15 +136,37 @@ class _SearchResultState extends State<SearchResult> {
                     var cambaImage = listaBuscados[i]['imagenes'][0]
                             ['path_imagen_1920']
                         .toString();
+                    var cambaImage2 = listaBuscados[i]['imagenes'][0]
+                            ['path_imagen_1280']
+                        .toString();
                     var cambaPrice =
                         listaBuscados[i]["precio_estimado"].toString();
                     var cambaId = listaBuscados[i]["id"];
+                    var imageList = [];
+                    var categories = [];
+                    var recorrida = listaBuscados[i]["imagenes"].length;
+                    var recorrida2 = listaBuscados[i]["categorias"].length;
+                    for (var j = 0; j < recorrida2; j++) {
+                      categories.add(listaBuscados[i]["categorias"][j]
+                          ["nombre_categoria"]);
+                    }
+                    for (var j = 0; j < recorrida; j++) {
+                      imageList.add(
+                          listaBuscados[i]["imagenes"][j]["path_imagen_1920"]);
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return ProductDetail(cambaName, cambaDescription,
-                              cambaImage, cambaPrice, cambaId);
+                          return ProductDetail(
+                              cambaName,
+                              cambaDescription,
+                              cambaImage,
+                              cambaPrice,
+                              cambaId,
+                              cambaImage2,
+                              imageList,
+                              categories);
                         },
                       ),
                     );

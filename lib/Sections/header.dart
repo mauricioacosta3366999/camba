@@ -64,7 +64,7 @@ class _HeaderState extends State<Header> {
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.fromLTRB(20, 7, 5, 5),
+                          padding: EdgeInsets.fromLTRB(20, 0, 0, 2.5),
                           height: 40,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.black),
@@ -82,7 +82,7 @@ class _HeaderState extends State<Header> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 7),
+                      SizedBox(width: 10),
                       GestureDetector(
                         onTap: () async {
                           var searchText =
