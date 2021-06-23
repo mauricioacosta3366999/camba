@@ -3,7 +3,7 @@ import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/sendProposal.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetail extends StatefulWidget {
   var cambaId;
@@ -19,7 +19,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  @override
+  var f = NumberFormat('#,###', 'es_AR');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +71,15 @@ class _ProductDetailState extends State<ProductDetail> {
         Container(
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
           width: double.infinity,
-          child: Text(widget.cambaPrice),
+          child: Row(
+            children: [
+              Text(
+                'Gs.  ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(f.format(int.parse(widget.cambaPrice))),
+            ],
+          ),
         ),
         Container(
           margin: EdgeInsets.only(left: 20, bottom: 5),

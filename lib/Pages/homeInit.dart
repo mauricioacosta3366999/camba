@@ -112,16 +112,23 @@ class _HomeInitState extends State {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 9.0),
-                                      decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border:
-                                              Border.all(color: Colors.black)),
-                                      child: Image.asset(i));
+                                    width: MediaQuery.of(context).size.width,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 9.0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border:
+                                            Border.all(color: Colors.black)),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          new BorderRadius.circular(15),
+                                      child: Image.asset(
+                                        i,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
                                 },
                               );
                             }).toList(),

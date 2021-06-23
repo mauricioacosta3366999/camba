@@ -2,6 +2,7 @@ import 'package:camba/Api/consultas.dart';
 import 'package:camba/Pages/cambaCreate.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CambaCreado extends StatefulWidget {
   String propuesta;
@@ -11,6 +12,7 @@ class CambaCreado extends StatefulWidget {
   String priceCamba;
   List categoriasSeleccionadas;
   List cambaImages;
+  var aceptarPropuesta;
   CambaCreado(
       this.titleCamba,
       this.descriptionCamba,
@@ -27,6 +29,7 @@ class CambaCreado extends StatefulWidget {
 }
 
 class CambaCreadoState extends State<CambaCreado> {
+  var f = NumberFormat('#,###', 'es_AR');
   final _formKey = GlobalKey<FormState>();
   List propuestas = [];
   @override
@@ -39,7 +42,6 @@ class CambaCreadoState extends State<CambaCreado> {
   @override
   void initState() {
     super.initState();
-    print(widget.cambaId);
     peticion();
   }
 
@@ -49,11 +51,17 @@ class CambaCreadoState extends State<CambaCreado> {
     setState(() {
       propuestas =
           apiResponse["message"]["resultado"]["original"]["propuestas"];
-      for (var i = 0; i < propuestas.length; i++) {
-        print('esta es la imagen numero $i');
-        print(propuestas[i]["imagenes"]);
-      }
+      // for (var i = 0; i < propuestas.length; i++) {
+      //   print('esta es la imagen numero $i');
+      //   print(propuestas[i]["imagenes"]);
+      // }
     });
+  }
+
+  void aceptarPropuesta() {
+    var propuestaId = widget.cambaId;
+    var respuesta = Consultas().aceptarPropuesta(propuestaId);
+    print('esta es la respuesta de aceptar $respuesta');
   }
 
   Widget _body() {
@@ -66,8 +74,14 @@ class CambaCreadoState extends State<CambaCreado> {
           color: Colors.grey,
           margin: EdgeInsets.only(left: 20, right: 20, top: 10),
           child: widget.cambaImages[0].toString().contains('http')
-              ? Image.network(widget.cambaImages[0])
-              : Image.file(widget.cambaImages[0]),
+              ? Image.network(
+                  widget.cambaImages[0],
+                  fit: BoxFit.cover,
+                )
+              : Image.file(
+                  widget.cambaImages[0],
+                  fit: BoxFit.cover,
+                ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 10),
@@ -112,7 +126,7 @@ class CambaCreadoState extends State<CambaCreado> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                widget.priceCamba.toString(),
+                f.format(int.parse(widget.priceCamba)),
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
@@ -352,7 +366,7 @@ class CambaCreadoState extends State<CambaCreado> {
                                       'assets/images/cambasinfoto.jpg',
                                       fit: BoxFit.cover,
                                     )
-                                  : Image.network(imagen)),
+                                  : Image.network(imagen, fit: BoxFit.cover)),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -368,16 +382,21 @@ class CambaCreadoState extends State<CambaCreado> {
                                 ),
                               ),
                               Text(nombre),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    borderRadius: BorderRadius.circular(20)),
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(
-                                    left: 10, bottom: 5, top: 5),
-                                height: 40,
-                                width: 100,
-                                child: Text('Aceptar'),
+                              GestureDetector(
+                                onTap: () {
+                                  aceptarPropuesta();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.green),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(
+                                      left: 10, bottom: 5, top: 5),
+                                  height: 40,
+                                  width: 100,
+                                  child: Text('Aceptar'),
+                                ),
                               ),
                               GestureDetector(
                                 onTap: () {
