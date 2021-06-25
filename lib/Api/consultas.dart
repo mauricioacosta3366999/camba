@@ -195,4 +195,12 @@ class Consultas {
     this.responde = json.decode(res.body);
     return responde;
   }
+
+  Future chats(userId) async {
+    final chats = Uri.parse('$api/cambas/obtener_mensajes');
+    var res = await http.post(chats, body: {"user_id": userId.toString()});
+    this.responde = json.decode(res.body);
+    print('consultas: userId $userId');
+    return responde;
+  }
 }

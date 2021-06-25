@@ -434,17 +434,13 @@ class CambaCreadoState extends State<CambaCreado> {
                           ),
                         ],
                       ),
-                      Row(
+                      Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15, left: 10),
-                            child: Text("Mensaje: "),
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 15, left: 5),
                             child: Text(mensaje == null
-                                ? "No dejó ningun mensaje"
-                                : mensaje),
+                                ? " Mensaje: No dejó ningun mensaje aqui en el lugar del mensaje "
+                                : "Mensaje: $mensaje"),
                           )
                         ],
                       )
