@@ -203,4 +203,26 @@ class Consultas {
     print('consultas: userId $userId');
     return responde;
   }
+
+  Future conversaciones(userId, propuestaId) async {
+    final conversaciones = Uri.parse('$api/cambas/obtener_chat');
+    var res = await http.post(conversaciones, body: {
+      "usuario_id": userId.toString(),
+      "propuesta_id": propuestaId.toString()
+    });
+    this.responde = json.decode(res.body);
+    print('consultas: userId $userId');
+    return responde;
+  }
+
+  Future sendMessage(userId, propuestaId, message) async {
+    final sendMessage = Uri.parse('$api/cambas/obtener_chat');
+    var res = await http.post(sendMessage, body: {
+      "usuario_id": userId.toString(),
+      "propuesta_id": propuestaId.toString()
+    });
+    this.responde = json.decode(res.body);
+    print('consultas: userId $userId');
+    return responde;
+  }
 }
