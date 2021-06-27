@@ -216,13 +216,16 @@ class Consultas {
   }
 
   Future sendMessage(userId, propuestaId, message) async {
-    final sendMessage = Uri.parse('$api/cambas/obtener_chat');
+    final sendMessage = Uri.parse('$api/cambas/guardar_nuevo_mensaje');
     var res = await http.post(sendMessage, body: {
       "usuario_id": userId.toString(),
+      "mensaje": message.toString(),
       "propuesta_id": propuestaId.toString()
     });
     this.responde = json.decode(res.body);
     print('consultas: userId $userId');
+    print('consultas: propuestaID $propuestaId');
+    print('consultas: message $message');
     return responde;
   }
 }

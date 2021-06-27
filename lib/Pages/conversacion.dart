@@ -18,6 +18,7 @@ class _ConversacionState extends State<Conversacion> {
   var messageController = TextEditingController();
   var mensajesEnviados = '';
   var loader = true;
+  var messages = [];
   var respuesta;
   var userId;
   var propuestaId;
@@ -64,11 +65,8 @@ class _ConversacionState extends State<Conversacion> {
   Widget body() {
     return Expanded(
       child: Container(
-        width: double.infinity,
-        height: double.infinity,
         child: Stack(
           children: <Widget>[
-            // Positioned(bottom: 0, child: messageEdit()),
             SingleChildScrollView(
                 child: Column(
               children: [
@@ -167,19 +165,47 @@ class _ConversacionState extends State<Conversacion> {
                               ),
                       ],
                     ),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                for (var i = 0; i < messages.length; i++)
+                  Column(
                     children: [
-                      Container(
-                        child: messageEdit(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                              constraints:
+                                  BoxConstraints(minWidth: 10, maxWidth: 200),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: EdgeInsets.only(
+                                  top: 5, bottom: 5, right: 10, left: 10),
+                              margin:
+                                  EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                              child: Text(messages[i].toString())),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Text('21:10'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+                SizedBox(
+                  height: 100,
                 )
               ],
             )),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  child: messageEdit(),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -188,32 +214,49 @@ class _ConversacionState extends State<Conversacion> {
 
   Widget messageEdit() {
     return Container(
-        padding: EdgeInsets.only(left: 15),
-        margin: EdgeInsets.only(left: 15, right: 15, bottom: 30),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)),
-        child: TextFormField(
-          cursorColor: Colors.black,
-          controller: messageController,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            suffixIcon: IconButton(
-              icon: Icon(Icons.send),
-              color: Colors.grey,
-              onPressed: () {
-                if (messageController.value.text.isNotEmpty) {
-                  var message = messageController.value.text.toString();
-                  sendMessage(message);
-                }
-              },
-            ),
-            hintText: 'Escribe un nuevo mensaje',
-            hintStyle: TextStyle(color: Colors.black),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey,
+        ),
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.all(10),
+      child: Container(
+          padding: EdgeInsets.only(left: 15),
+          margin: EdgeInsets.only(
+            left: 15,
+            right: 15,
           ),
-          style: TextStyle(color: Colors.black),
-        ));
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10)),
+          child: TextFormField(
+            cursorColor: Colors.black,
+            controller: messageController,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                icon: Icon(Icons.send),
+                color: Colors.grey,
+                onPressed: () {
+                  if (messageController.value.text.isNotEmpty) {
+                    var message = messageController.value.text.toString();
+                    setState(() {
+                      messages.add(message);
+                      sendMessage(message);
+                      messageController.text = '';
+                    });
+                  }
+                },
+              ),
+              hintText: 'Escribe un nuevo mensaje',
+              hintStyle: TextStyle(color: Colors.black),
+            ),
+            style: TextStyle(color: Colors.black),
+          )),
+    );
   }
 }
