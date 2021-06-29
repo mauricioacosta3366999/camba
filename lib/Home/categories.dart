@@ -72,23 +72,24 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ),
           children: <Widget>[
             for (var ai = 0; ai < listr[i].length; ai++)
-              PersonalListTile(
-                // contentPadding: EdgeInsets.all(2),
-                title: GestureDetector(
-                  onTap: () {
-                    var categoriaSeleccionada = listr[i][ai].toString();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return CategoryFilter(categoriaSeleccionada);
-                    }));
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      listr[i][ai].toString() == '[]'
-                          ? ''
-                          : listr[i][ai].toString(),
-                      style: TextStyle(color: Colors.white),
+              GestureDetector(
+                onTap: () {
+                  var categoriaSeleccionada = listr[i][ai].toString();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CategoryFilter(categoriaSeleccionada);
+                  }));
+                },
+                child: ListTile(
+                  title: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        listr[i][ai].toString() == '[]'
+                            ? ''
+                            : listr[i][ai].toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),

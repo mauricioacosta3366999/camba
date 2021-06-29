@@ -53,6 +53,20 @@ class Consultas {
     return responde;
   }
 
+  Future getCambaByCategory(String category) async {
+    final obtenerCambaByCategory = Uri.parse('$api/cambas/obtener_cambas');
+
+    print('dentro del get camba by category $category');
+    final res = await http.post(obtenerCambaByCategory, body: {
+      "categoria_nombre": category.toString(),
+      "admin": "0",
+      "last": "0"
+    });
+    this.responde = json.decode(res.body);
+    print('este es el responde $responde');
+    return responde;
+  }
+
   Future login(String email, String pass) async {
     final loginURL = Uri.parse('$api/user/login');
     final res =
