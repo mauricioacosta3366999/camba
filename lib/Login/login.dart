@@ -136,7 +136,7 @@ class _LoginState extends State {
                                       builder: (context) => passRecover()));
                             },
                             child: Text(
-                              'Olvidaste tu contraseña?  Click Aquí',
+                              '¿ Olvidaste tu contraseña ?  Click Aquí',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                               ),
@@ -150,15 +150,19 @@ class _LoginState extends State {
 
                                 if (passController.value.text.isNotEmpty ||
                                     emailController.value.text.isNotEmpty) {
-                                  var apiResponse =
-                                      await Consultas().login(email, pass);
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
+                                  try {
+                                    var apiResponse =
+                                        await Consultas().login(email, pass);
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
 
-                                  var userId = prefs.getInt('userId');
+                                    var userId = prefs.getInt('userId');
 
-                                  if (apiResponse['message'] ==
-                                      'Unauthorized') {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return Home();
+                                    }));
+                                  } catch (e) {
                                     final snackBar = SnackBar(
                                       backgroundColor: Colors.red,
                                       content: Text('Credenciales incorrectos'),
@@ -169,15 +173,7 @@ class _LoginState extends State {
                                     );
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
-                                    print(apiResponse);
-                                  } else {
-                                    print(apiResponse);
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return Home();
-                                    }));
                                   }
-                                  print(' este es el id del user $userId');
                                 } else {
                                   final snackBar = SnackBar(
                                     backgroundColor: Colors.red,
@@ -193,7 +189,8 @@ class _LoginState extends State {
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.only(left: 10, top: 20),
+                                margin: EdgeInsets.only(
+                                    left: 10, top: 20, right: 10),
                                 height: 50,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
@@ -205,7 +202,7 @@ class _LoginState extends State {
                               )),
                           SizedBox(height: 50),
                           Text(
-                            'Sos nuevo?',
+                            '¿ Sos nuevo ?',
                             style: TextStyle(fontSize: 18),
                           ),
                           GestureDetector(
@@ -217,7 +214,8 @@ class _LoginState extends State {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              margin: EdgeInsets.only(left: 10, top: 5),
+                              margin: EdgeInsets.only(
+                                  left: 10, top: 5, right: 10, bottom: 5),
                               height: 50,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -241,7 +239,8 @@ class _LoginState extends State {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              margin: EdgeInsets.only(left: 10, top: 5),
+                              margin:
+                                  EdgeInsets.only(left: 10, top: 10, right: 10),
                               height: 50,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),

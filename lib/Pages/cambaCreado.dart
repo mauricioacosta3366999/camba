@@ -126,7 +126,7 @@ class CambaCreadoState extends State<CambaCreado> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                f.format(int.parse(widget.priceCamba)),
+                widget.priceCamba,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],

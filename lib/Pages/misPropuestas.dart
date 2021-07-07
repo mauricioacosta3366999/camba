@@ -75,92 +75,101 @@ class _MisPropuestasState extends State<MisPropuestas> {
                     )
                   : Text(''),
               for (var i = 0; i < misPropuestas.length; i++)
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey)),
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                            color: Colors.grey[400],
-                            margin: EdgeInsets.all(20),
-                            height: 150,
-                            width: double.infinity,
-                            child: Image.network(
-                                misPropuestas[i]['imagenes'][0]
-                                    ['path_imagen_1920'],
-                                fit: BoxFit.cover)),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin:
-                            EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                misPropuestas[i]["cantidad_propuestas_pendientes_visualizacion"]
+                            .toString() !=
+                        '0'
+                    ? Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)),
                         width: double.infinity,
-                        child: Text(
-                          misPropuestas[0]['titulo_camba'].toString(),
-                          style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
                         margin:
-                            EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                        width: double.infinity,
-                        child: Text(
-                          misPropuestas[0]['descripcion'].toString(),
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          var titleCamba = misPropuestas[i]['titulo_camba'];
-                          var descriptionCamba =
-                              misPropuestas[i]['descripcion'];
-                          var priceCamba = misPropuestas[i]['precio_estimado'];
-                          List cambaImages = [];
-                          int cambaId = misPropuestas[i]['id'];
-                          var categoriasSeleccionadas = [];
-                          String propuesta = 'si';
-                          var cambaImage = misPropuestas[i]['imagenes'][0]
-                                  ['path_imagen_1920']
-                              .toString();
-                          cambaImages.add(cambaImage);
-                          print(
-                              'esto es el array de imagenes que busco $cambaImages');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CambaCreado(
-                                    titleCamba,
-                                    descriptionCamba,
-                                    priceCamba,
-                                    cambaImages,
-                                    categoriasSeleccionadas,
-                                    cambaId,
-                                    propuesta)),
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(
-                              left: 20, top: 20, right: 20, bottom: 20),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xff444444)),
-                          child: Text(
-                            'VER CAMBA',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                            EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  color: Colors.grey[400],
+                                  margin: EdgeInsets.all(20),
+                                  height: 150,
+                                  width: double.infinity,
+                                  child: Image.network(
+                                      misPropuestas[i]['imagenes'][0]
+                                          ['path_imagen_1920'],
+                                      fit: BoxFit.cover)),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 10),
+                              width: double.infinity,
+                              child: Text(
+                                misPropuestas[0]['titulo_camba'].toString(),
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20),
+                              width: double.infinity,
+                              child: Text(
+                                misPropuestas[0]['descripcion'].toString(),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                var titleCamba =
+                                    misPropuestas[i]['titulo_camba'];
+                                var descriptionCamba =
+                                    misPropuestas[i]['descripcion'];
+                                var priceCamba =
+                                    misPropuestas[i]['precio_estimado'];
+                                List cambaImages = [];
+                                int cambaId = misPropuestas[i]['id'];
+                                var categoriasSeleccionadas = [];
+                                String propuesta = 'si';
+                                var cambaImage = misPropuestas[i]['imagenes'][0]
+                                        ['path_imagen_1920']
+                                    .toString();
+                                cambaImages.add(cambaImage);
+                                print(
+                                    'esto es el array de imagenes que busco $cambaImages');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CambaCreado(
+                                          titleCamba,
+                                          descriptionCamba,
+                                          priceCamba,
+                                          cambaImages,
+                                          categoriasSeleccionadas,
+                                          cambaId,
+                                          propuesta)),
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    left: 20, top: 20, right: 20, bottom: 20),
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xff444444)),
+                                child: Text(
+                                  'PROPUESTAS RECIBIDAS: ' +
+                                      misPropuestas[i][
+                                              "cantidad_propuestas_pendientes_visualizacion"]
+                                          .toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ))
+                    : Text('Ninguna propuesta recibida.')
             ],
           );
   }

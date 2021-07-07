@@ -91,9 +91,7 @@ class _ChatState extends State<Chat> {
                                           left: 20, right: 20, bottom: 10),
                                       width: 200,
                                       child: Text(
-                                        'Mensaje de ' +
-                                            respuesta[i]["nombre_emisor"] +
-                                            ' :',
+                                        respuesta[i]["nombre_emisor"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -104,8 +102,7 @@ class _ChatState extends State<Chat> {
                                           left: 20, right: 20, bottom: 10),
                                       width: 200,
                                       child: Text(
-                                        'Mensaje de ' +
-                                            respuesta[i]["titulo_camba"],
+                                        respuesta[i]["titulo_camba"],
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),

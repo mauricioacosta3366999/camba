@@ -196,12 +196,13 @@ class _RegisterState extends State {
                                 var pass = passController.value.text.toString();
                                 var imagen = '';
                                 var apiResponse = await Consultas().register(
-                                    nombre,
-                                    email,
-                                    telefono,
-                                    userName,
-                                    pass,
-                                    imagen);
+                                  nombre,
+                                  email,
+                                  telefono,
+                                  userName,
+                                  pass,
+                                  imagen,
+                                );
 
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
@@ -255,7 +256,7 @@ class _RegisterState extends State {
                               child: Container(
                                 alignment: Alignment.center,
                                 margin: EdgeInsets.only(
-                                    left: 10, bottom: 50, top: 25),
+                                    left: 10, right: 10, bottom: 50, top: 25),
                                 height: 50,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),

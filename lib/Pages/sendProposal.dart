@@ -73,7 +73,7 @@ class sendProposalState extends State<sendProposal> {
 
       print(newCamba);
 
-      print(response.toString());
+      print(response);
 
       if (res.statusCode == 200) {
         uploadConvertAndUpload(response['id'].toString());

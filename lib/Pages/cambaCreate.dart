@@ -125,7 +125,7 @@ class cambaCreateState extends State<cambaCreate> {
 
       final response = json.decode(res.body);
       print('esto es parte de la segunda llamada');
-      print(response.toString());
+      print(response);
 
       if (res.statusCode == 200) {
         uploadConvertAndUpload(response['id'].toString());
@@ -697,7 +697,7 @@ class cambaCreateState extends State<cambaCreate> {
                       await crearCanva2();
                       var titleCamba = titleController.value.text;
                       var descriptionCamba = descriptionController.value.text;
-                      var priceCamba = priceController.value.text.toString();
+                      var priceCamba = priceController.value.text;
                       List cambaImages = imagenes;
                       var cambaId = 0;
                       String propuesta = 'no';
@@ -789,7 +789,7 @@ class cambaCreateState extends State<cambaCreate> {
 }
 
 class ThousandsSeparatorInputFormatter extends TextInputFormatter {
-  static const separator = ','; // Change this to '.' for other locales
+  static const separator = '.'; // Change this to '.' for other locales
 
   @override
   TextEditingValue formatEditUpdate(
