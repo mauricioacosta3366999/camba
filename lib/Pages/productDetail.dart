@@ -1,6 +1,7 @@
 import 'package:camba/Home/home.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/sendProposal.dart';
+import 'package:camba/Widgets/photo-viewer-widget.dart';
 import 'package:flutter/material.dart';
 import 'package:camba/Sections/header.dart';
 import 'package:intl/intl.dart';
@@ -81,12 +82,11 @@ class _ProductDetailState extends State<ProductDetail> {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.black)),
                         child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(15),
-                          child: Image.network(
-                            i,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            borderRadius: new BorderRadius.circular(15),
+                            child: PhotoViewerWidget(
+                              url: i,
+                              context: context,
+                            )),
                       );
                     },
                   );
@@ -97,8 +97,10 @@ class _ProductDetailState extends State<ProductDetail> {
                 margin: EdgeInsets.all(20),
                 height: 200,
                 width: double.infinity,
-                child: Image.network(widget.imageList[0], fit: BoxFit.cover),
-              ),
+                child: PhotoViewerWidget(
+                  url: widget.imageList[0],
+                  context: context,
+                )),
         SizedBox(
           height: 20,
         ),
