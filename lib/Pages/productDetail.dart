@@ -1,4 +1,5 @@
 import 'package:camba/Home/home.dart';
+import 'package:camba/Login/login.dart';
 import 'package:camba/Pages/homeInit.dart';
 import 'package:camba/Pages/sendProposal.dart';
 import 'package:camba/Widgets/photo-viewer-widget.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ProductDetail extends StatefulWidget {
+  var goLogin;
   var cambaId;
   var imageList;
   var categories;
@@ -25,6 +27,7 @@ class ProductDetail extends StatefulWidget {
       this.cambaImage2,
       this.imageList,
       this.categories,
+      this.goLogin,
       {Key? key})
       : super(key: key);
   _ProductDetailState createState() => _ProductDetailState();
@@ -173,10 +176,15 @@ class _ProductDetailState extends State<ProductDetail> {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return sendProposal();
-                }));
+                widget.goLogin
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                        return Login();
+                      }))
+                    : Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                        return sendProposal();
+                      }));
               },
               child: Container(
                 alignment: Alignment.center,

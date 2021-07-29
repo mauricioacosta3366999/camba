@@ -120,20 +120,21 @@ class _CategoryFilterState extends State<CategoryFilter> {
                       var cambaPrice =
                           categoryProduct[i]['precio_estimado'].toString();
                       var cambaId = categoryProduct[i]['id'];
+                      var goLogin = false;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) {
                             return ProductDetail(
-                              cambaName,
-                              cambaDescription,
-                              cambaImage,
-                              cambaPrice,
-                              cambaId,
-                              cambaImage2,
-                              imageList,
-                              categories,
-                            );
+                                cambaName,
+                                cambaDescription,
+                                cambaImage,
+                                cambaPrice,
+                                cambaId,
+                                cambaImage2,
+                                imageList,
+                                categories,
+                                goLogin);
                           },
                         ),
                       );

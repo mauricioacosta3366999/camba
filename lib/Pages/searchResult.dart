@@ -154,6 +154,7 @@ class _SearchResultState extends State<SearchResult> {
                       imageList.add(
                           listaBuscados[i]["imagenes"][j]["path_imagen_1920"]);
                     }
+                    var goLogin = false;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -166,7 +167,8 @@ class _SearchResultState extends State<SearchResult> {
                               cambaId,
                               cambaImage2,
                               imageList,
-                              categories);
+                              categories,
+                              goLogin);
                         },
                       ),
                     );

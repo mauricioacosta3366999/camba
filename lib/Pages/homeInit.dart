@@ -228,6 +228,7 @@ class _HomeInitState extends State {
                                           .precioEstimado
                                           .toString();
                                       var cambaId = datosCambas![i].id;
+                                      var goLogin = false;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -240,7 +241,8 @@ class _HomeInitState extends State {
                                                 cambaId,
                                                 cambaImage2,
                                                 imageList,
-                                                categories);
+                                                categories,
+                                                goLogin);
                                           },
                                         ),
                                       );

@@ -246,6 +246,7 @@ class _InvitadosState extends State {
                                               .imagenes![j]
                                               .pathImagen1920);
                                         }
+                                        var goLogin = true;
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -258,7 +259,8 @@ class _InvitadosState extends State {
                                                   cambaId,
                                                   cambaImage2,
                                                   imageList,
-                                                  categories);
+                                                  categories,
+                                                  goLogin);
                                             },
                                           ),
                                         );
