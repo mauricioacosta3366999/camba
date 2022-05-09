@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:camba/Api/Models/cambasBuscados.dart';
 import 'package:camba/Api/Models/categories.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Models/obtenerCambas.dart';
-import 'Models/loginModel.dart';
 
 class Consultas {
   dynamic responde;

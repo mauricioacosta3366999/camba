@@ -73,7 +73,7 @@ class _ChatState extends State<Chat> {
                             Row(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(right: 15, bottom: 5),
+                                  margin: EdgeInsets.only(bottom: 5),
                                   child: ClipRRect(
                                     borderRadius:
                                         new BorderRadius.circular(100),
@@ -125,8 +125,7 @@ class _ChatState extends State<Chat> {
                                             );
                                           },
                                           child: Container(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
+                                            padding: EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Colors.black),
@@ -135,8 +134,7 @@ class _ChatState extends State<Chat> {
                                                     BorderRadius.circular(20)),
                                             alignment: Alignment.center,
                                             margin: EdgeInsets.only(
-                                                left: 10, bottom: 5, top: 5),
-                                            height: 35,
+                                                left: 5, bottom: 5, top: 5),
                                             child: Text(
                                               'Ver Conversación',
                                             ),
@@ -145,8 +143,7 @@ class _ChatState extends State<Chat> {
                                         GestureDetector(
                                           onTap: () {},
                                           child: Container(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
+                                            padding: EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Colors.grey),
@@ -154,9 +151,8 @@ class _ChatState extends State<Chat> {
                                                     BorderRadius.circular(20)),
                                             alignment: Alignment.center,
                                             margin: EdgeInsets.only(
-                                                left: 10, top: 5),
-                                            height: 35,
-                                            child: Text('Camba Concretado'),
+                                                left: 5, top: 5),
+                                            child: Text('Concretar Camba'),
                                           ),
                                         )
                                       ],

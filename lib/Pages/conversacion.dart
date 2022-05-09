@@ -56,7 +56,6 @@ class _ConversacionState extends State<Conversacion> {
   void sendMessage(message) async {
     var envioMensajeResponse =
         await Consultas().sendMessage(userId, propuestaId, message);
-    print('esto es el envio de mensaje $envioMensaje');
     setState(() {
       envioMensaje = envioMensajeResponse;
     });
@@ -118,10 +117,10 @@ class _ConversacionState extends State<Conversacion> {
                         userId != respuesta[i]["emisor_id"]
                             ? Row(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text('21:10'),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(left: 10),
+                                  //   child: Text('21:10'),
+                                  // ),
                                   Container(
                                     constraints: BoxConstraints(
                                         minWidth: 10, maxWidth: 200),
@@ -157,10 +156,10 @@ class _ConversacionState extends State<Conversacion> {
                                       margin: EdgeInsets.only(
                                           right: 5, top: 5, bottom: 5),
                                       child: Text(respuesta[i]["mensaje"])),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Text('21:10'),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(right: 10),
+                                  //   child: Text('21:10'),
+                                  // ),
                                 ],
                               ),
                       ],
@@ -184,10 +183,10 @@ class _ConversacionState extends State<Conversacion> {
                               margin:
                                   EdgeInsets.only(right: 5, top: 5, bottom: 5),
                               child: Text(messages[i].toString())),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Text('21:10'),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right: 10),
+                          //   child: Text('21:10'),
+                          // ),
                         ],
                       ),
                     ],

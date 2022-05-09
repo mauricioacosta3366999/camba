@@ -408,8 +408,6 @@ class _ProfileState extends State {
                                             Expanded(
                                                 child: GestureDetector(
                                                     onTap: () async {
-                                                      print(
-                                                          'Se cerró la sesión');
                                                       SharedPreferences prefs =
                                                           await SharedPreferences
                                                               .getInstance();

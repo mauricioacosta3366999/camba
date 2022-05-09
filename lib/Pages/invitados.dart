@@ -113,7 +113,7 @@ class _InvitadosState extends State {
                                 slider2,
                                 slider3,
                                 slider4,
-                                slider5
+                                slider5,
                               ].map((i) {
                                 return Builder(
                                   builder: (BuildContext context) {
@@ -128,7 +128,10 @@ class _InvitadosState extends State {
                                                 BorderRadius.circular(15),
                                             border: Border.all(
                                                 color: Colors.black)),
-                                        child: Image.asset(i));
+                                        child: Image.asset(
+                                          i,
+                                          fit: BoxFit.cover,
+                                        ));
                                   },
                                 );
                               }).toList(),
@@ -155,20 +158,20 @@ class _InvitadosState extends State {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        var titleEdit = 'Título del camba';
-                                        var descriptionEdit =
-                                            'Descripción de lo que tienes';
-                                        var priceEdit1 =
-                                            'Precio referencial en Gs.';
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return cambaCreate(titleEdit,
-                                                  descriptionEdit, priceEdit1);
-                                            },
-                                          ),
-                                        );
+                                        // var titleEdit = 'Título del camba';
+                                        // var descriptionEdit =
+                                        //     'Descripción de lo que tienes';
+                                        // var priceEdit1 =
+                                        //     'Precio referencial en Gs.';
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) {
+                                        //       return cambaCreate(titleEdit,
+                                        //           descriptionEdit, priceEdit1);
+                                        //     },
+                                        //   ),
+                                        // );
                                       },
                                       child: Container(
                                         color: Colors.grey[400],
